@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+
+import pycommand
+import sys
+
+
+class CommandExample(pycommand.CommandBase):
+    usagestr = 'usage: pycommand-example [options]'
+    description = 'This is a description'
+    optionList = (
+        ('help', ('h', False, 'show this help information')),
+        ('file', ('f', '<filename>', 'use specified file')),
+        ('version', ('V', False, 'show version information')),
+    )
+    usageTextExtra = 'This is extra usage info'
+
+    def run(self):
+        if self.flags['help']:
+            print(self.usage)
+            return
+        elif self.flags['version']:
+            print('Python version ' + sys.version.split()[0])
+            return
+        elif self.flags['file']:
+            print('filename = ' + self.flags['file'])
+            return
+
+        print('Done. Try -h, -f or -V')
+        # cmd.registerParentFlag('file', self.flags['file'])
+
+if __name__ == '__main__':
+    cmd = CommandExample(sys.argv[1:])
+    cmd.run()
