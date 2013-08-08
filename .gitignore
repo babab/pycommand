@@ -1,0 +1,6 @@
+build
+dist
+Makefile
+MANIFEST
+*.pyc
+__pycache__

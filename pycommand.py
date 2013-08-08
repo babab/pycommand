@@ -1,4 +1,4 @@
-'''Create (recursive trees of) executable commands using minimal code'''
+'''Create (recursive trees of) executable (sub)commands using minimal code'''
 
 # Copyright (c) 2013  Benjamin Althues <benjamin@babab.nl>
 #
@@ -20,8 +20,8 @@ import getopt
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
 __copyright__ = "Copyright (C) 2013  Benjamin Althues"
-__version_info__ = (0, 1, 0, 'alpha', 0)
-__version__ = '0.1.0-dev'
+__version_info__ = (0, 1, 0, 'beta', 0)
+__version__ = '0.1.0'
 
 long_description = '''pycommand is a module with one simple `CommandBase` class
 that you can use to create executable commands for your python programs with

@@ -59,6 +59,7 @@ Download and install
 ====================
 
 ::
+
    $ git clone git://bitbucket.org/babab/pycommand.git
    # python setup.py install
 
