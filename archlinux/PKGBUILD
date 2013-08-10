@@ -1,0 +1,33 @@
+# Maintainer: Benjamin Althues <benjamin@babab.nl>
+
+name=pycommand
+python=python
+
+pkgname=${python}-${name}
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Create (recursive trees of) executable (sub)commands with minimal code'
+depends=("${python}")
+makedepends=("${python}-distribute")
+arch=('any')
+source=(http://pypi.python.org/packages/source/p/${name}/${name}-${pkgver}.tar.gz)
+md5sums=(1c41cdf89c4b63f9cd04c6b478b439b4)
+url="http://pythonhosted.org/${name}/"
+license=("custom:ISC")
+
+build() {
+    cd $srcdir/$name-$pkgver
+    ${python} setup.py build || return 1
+}
+
+package() {
+    cd $srcdir/$name-$pkgver
+    ${python} setup.py install --root=$pkgdir
+
+    install -Dm644 "${srcdir}/${name}-${pkgver}/LICENSE" \
+        "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    install -Dm644 "${srcdir}/${name}-${pkgver}/README.rst" \
+        "${pkgdir}/usr/share/doc/${pkgname}/README.rst"
+    # install -Dm755 "${srcdir}/${name}-${pkgver}/examples/basic-example" \
+    #     "${pkgdir}/usr/share/doc/${pkgname}/examples/basic-example"
+}
