@@ -1,4 +1,4 @@
-'''Create (recursive trees of) executable (sub)commands using minimal code'''
+'''Parse command line arguments / define (sub)commands with minimal code'''
 
 # Copyright (c) 2013  Benjamin Althues <benjamin@babab.nl>
 #
@@ -23,9 +23,12 @@ __copyright__ = "Copyright (C) 2013  Benjamin Althues"
 __version_info__ = (0, 1, 0, 'beta', 0)
 __version__ = '0.1.0'
 
-long_description = '''pycommand is a module with one simple `CommandBase` class
-that you can use to create executable commands for your python programs with
-very simplistic and readable code.'''
+long_description = '''Pycommand consists of one simple `CommandBase` class
+that you can use to create executable commands for your python programs
+with very simplistic and readable code. It has support for nesting
+commands, so you can create (multiple levels of) subcommands, with the
+ability to pass the values of optional arguments of a command object to
+its subcommand objects. Supported Python versions are 2.7 and 3.3'''
 
 
 class CommandBase(object):
@@ -74,6 +77,9 @@ class CommandBase(object):
 
         self.flags = {}
         '''Dict of parsed options and corresponding arguments, if any.'''
+
+        self.args = []
+        '''List of parsed postional arguments'''
 
         self.parentFlags = {}
         '''Dict of registered `flags` of parent Command object.'''
