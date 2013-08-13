@@ -33,13 +33,16 @@ If you have pip installed, you can just::
 Otherwise, do something like this::
 
    $ git clone git://bitbucket.org/babab/pycommand.git
+   # cd pycommand
    # python setup.py install
 
 
-Example #1 - A Basic command
+Example
 ============================
 
-Here is a typical example of a very common command line interface program::
+For full documentation and examples, visit http://pythonhosted.org/pycommand/
+
+Here is a little preview::
 
    #!/usr/bin/env python
 
@@ -47,58 +50,16 @@ Here is a typical example of a very common command line interface program::
    import sys
 
 
-   class BasicExampleCommand(pycommand.CommandBase):
-       '''An example of a basic CLI program
-
-       This is an example that demonstrates the handling of all possible
-       settings for the optional arguments, managed via the `optionList`.
-       This example does not handle positional arguments.
-
-       '''
-       usagestr = 'usage: basic-example [options]'
-       description = __doc__.split('\n')[0]
-
-       # optionList is a tuple of 2-tuples, in format:
-       # (long-option, (short-option, argument, help-information))
-       #
-       # The order in which you define the options will be the order
-       # in which they will appear in the usage message
+   class Command(pycommand.CommandBase):
+       usagestr = 'usage: example-command [options]'
+       description = 'An example of a basic CLI program'
        optionList = (
            ('help', ('h', False, 'show this help information')),
-
-           # To specify that an option requires an argument just add a
-           # string that describes it
            ('file', ('f', '<filename>', 'use specified file')),
-
-           # Use an empty string to ommit short option. Long option names
-           # cannot be ommitted, since they are used as dictionary keys in
-           # `self.flags` which holds the validated input
            ('version', ('', False, 'show version information')),
        )
 
        def run(self):
-           '''The `run` method of the main command
-
-           You need to define a method in your class that actually deals
-           with any options that the user of your program has set. We call
-           it `run` here, but you can name it whatever you want.
-
-           After the object has been created, there are 5 instance
-           variables ready for you to use to write the flow of the program.
-           In this example we only use the following three::
-
-               self.error -- Thrown by GetoptError when parsing illegal
-                             arguments
-
-               self.flags -- OrderedDict of parsed options and corresponding
-                             arguments, if any.
-
-               self.usage -- String with usage information. The string
-                             is compiled using the values found for
-                             `usagestr`, `description`, `optionList` and
-                             `usageTextExtra`.
-
-           '''
            if self.flags['help']:
                print(self.usage)
                return
@@ -112,7 +73,7 @@ Here is a typical example of a very common command line interface program::
            print('Program completed. Try adding "--help"')
 
    if __name__ == '__main__':
-       cmd = BasicExampleCommand(sys.argv[1:])
+       cmd = Command(sys.argv[1:])
        if cmd.error:
            print('error: {0}'.format(cmd.error))
            sys.exit(1)
@@ -120,10 +81,10 @@ Here is a typical example of a very common command line interface program::
            sys.exit(cmd.run())
 
 
-If we name this script ``basic-example`` and execute it, the following will be
-the output for running ``basic-example -h`` or ``basic-example --help``::
+If we name this script ``example-comand`` and execute it, the following will be
+the output for running ``example-command -h`` or ``example-command --help``::
 
-   usage: basic-example [options]
+   usage: example-command [options]
 
    An example of a basic CLI program
 
@@ -131,12 +92,6 @@ the output for running ``basic-example -h`` or ``basic-example --help``::
    -h, --help                        show this help information
    -f <filename>, --file=<filename>  use specified file
    --version                         show version information
-
-
-Example #2 - Full example of one main command with two subcommands
-==================================================================
-
-TODO
 
 
 Contributing
