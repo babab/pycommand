@@ -40,20 +40,19 @@ class BasicExampleCommand(pycommand.CommandBase):
         with any options that the user of your program has set. We call
         it `run` here, but you can name it whatever you want.
 
-        After the object has been created, there are 5 instance
+        After the object has been created, there are 4 instance
         variables ready for you to use to write the flow of the program.
         In this example we only use the following three::
 
-            self.error -- Thrown by GetoptError when parsing illegal
-                          arguments
+            error -- Thrown by GetoptError when parsing illegal
+                     arguments
 
-            self.flags -- OrderedDict of parsed options and corresponding
-                          arguments, if any.
+            flags -- OrderedDict of parsed options and corresponding
+                     arguments, if any.
 
-            self.usage -- String with usage information. The string
-                          is compiled using the values found for
-                          `usagestr`, `description`, `optionList` and
-                          `usageTextExtra`.
+            usage -- String with usage information. The string
+                     is compiled using the values found for `usagestr`,
+                     `description`, `optionList` and `usageTextExtra`.
 
         '''
         if self.flags['help']:

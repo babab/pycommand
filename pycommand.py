@@ -41,7 +41,7 @@ class CommandBase(object):
     '''String. Small description of subcommand'''
 
     optionList = {}
-    '''Dictionary of options (as list of 2-tuples).
+    '''Dictionary of options (as a tuple of 2-tuples).
     This will be transformed to an OrderedDict when initializing the object.
 
     Example::
