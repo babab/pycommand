@@ -1,0 +1,462 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "PYCOMMAND" "3" "August 14, 2013" "0.1.0" "pycommand"
+.SH NAME
+pycommand \- pycommand Documentation
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.sp
+\fBParse command line arguments / define (sub)commands with minimal code\fP
+.sp
+Pycommand consists of one simple \fICommandBase\fP class that you can use to
+create executable commands for your python programs with very simplistic
+and readable code. It has support for nesting commands, so you can
+create (multiple levels of) subcommands, with the ability to pass the
+values of optional arguments of a command object to its subcommand
+objects. Supported Python versions are 2.7 and 3.3
+.SH EXAMPLE #1 - A BASIC COMMAND
+.sp
+Here is a typical example of a very common command line interface program:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+#!/usr/bin/env python
+
+import pycommand
+import sys
+
+
+class BasicExampleCommand(pycommand.CommandBase):
+    \(aq\(aq\(aqAn example of a basic CLI program
+
+    This is an example that demonstrates the handling of all possible
+    settings for the optional arguments, managed via the \(gaoptionList\(ga.
+    This example does not handle positional arguments.
+
+    \(aq\(aq\(aq
+    usagestr = \(aqusage: basic\-example [options]\(aq
+    description = __doc__.split(\(aq\en\(aq)[0]
+
+    # optionList is a tuple of 2\-tuples, in format:
+    # (long\-option, (short\-option, argument, help\-information))
+    #
+    # The order in which you define the options will be the order
+    # in which they will appear in the usage message
+    optionList = (
+        (\(aqhelp\(aq, (\(aqh\(aq, False, \(aqshow this help information\(aq)),
+
+        # To specify that an option requires an argument just add a
+        # string that describes it
+        (\(aqfile\(aq, (\(aqf\(aq, \(aq<filename>\(aq, \(aquse specified file\(aq)),
+
+        # Use an empty string to ommit short option. Long option names
+        # cannot be ommitted, since they are used as dictionary keys in
+        # \(gaself.flags\(ga which holds the validated input
+        (\(aqversion\(aq, (\(aq\(aq, False, \(aqshow version information\(aq)),
+    )
+
+    def run(self):
+        \(aq\(aq\(aqThe \(garun\(ga method of the main command
+
+        You need to define a method in your class that actually deals
+        with any options that the user of your program has set. We call
+        it \(garun\(ga here, but you can name it whatever you want.
+
+        After the object has been created, there are 4 instance
+        variables ready for you to use to write the flow of the program.
+        In this example we only use the following three::
+
+            error \-\- Thrown by GetoptError when parsing illegal
+                     arguments
+
+            flags \-\- OrderedDict of parsed options and corresponding
+                     arguments, if any.
+
+            usage \-\- String with usage information. The string
+                     is compiled using the values found for \(gausagestr\(ga,
+                     \(gadescription\(ga, \(gaoptionList\(ga and \(gausageTextExtra\(ga.
+
+        \(aq\(aq\(aq
+        if self.flags[\(aqhelp\(aq]:
+            print(self.usage)
+            return
+        elif self.flags[\(aqversion\(aq]:
+            print(\(aqPython version \(aq + sys.version.split()[0])
+            return
+        elif self.flags[\(aqfile\(aq]:
+            print(\(aqfilename = \(aq + self.flags[\(aqfile\(aq])
+            return
+
+        print(\(aqProgram completed. Try adding "\-\-help"\(aq)
+
+if __name__ == \(aq__main__\(aq:
+    cmd = BasicExampleCommand(sys.argv[1:])
+    if cmd.error:
+        print(\(aqerror: {0}\(aq.format(cmd.error))
+        sys.exit(1)
+    else:
+        sys.exit(cmd.run())
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If we name this script \fBbasic\-example\fP and execute it, the following will be
+the output for running \fBbasic\-example \-h\fP or \fBbasic\-example \-\-help\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: basic\-example [options]
+
+An example of a basic CLI program
+
+Options:
+\-h, \-\-help                        show this help information
+\-f <filename>, \-\-file=<filename>  use specified file
+\-\-version                         show version information
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH EXAMPLE #2 - FULL EXAMPLE OF ONE MAIN COMMAND WITH TWO SUBCOMMANDS
+.sp
+Here is a full example demonstrating essentially the same program, but
+with the \fB\-\-help\fP and \fB\-\-version\fP options replaced for subcommands:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+#!/usr/bin/env python
+
+import pycommand
+import sys
+
+
+class FullExampleCommand(pycommand.CommandBase):
+    \(aq\(aq\(aqAn full example of a pycommand CLI program
+
+    This is an example that demonstrates the mapping of postional
+    arguments to subcommands, registrering the \-\-file flag from the main
+    command to its subcommand. It only explains new concepts that are
+    not handled in \(ga\(gabasic\-example\(ga\(ga, so be sure to see that first.
+
+    \(aq\(aq\(aq
+    usagestr = \(aqusage: full\-example [\-f <filename>] <command> [<args>]\(aq
+    description = (
+        \(aqCommands:\en\(aq
+        \(aq   help         show this help information\en\(aq
+        \(aq   version      show full version information\(aq
+    )
+    optionList = ((\(aqfile\(aq, (\(aqf\(aq, \(aq<filename>\(aq, \(aquse specified file\(aq)), )
+
+    # Optional extra usage information
+    usageTextExtra = (
+        "See \(aqfull\-example help <command>\(aq for more information on a "
+        "specific command."
+    )
+
+    def run(self):
+        \(aq\(aq\(aqThe \(garun\(ga method of the main command
+
+        After the object has been created, there are 4 instance
+        variables ready for you to use to write the flow of the program.
+        In this example we use them all::
+
+            error \-\- Thrown by GetoptError when parsing illegal
+                     arguments
+
+            flags \-\- OrderedDict of parsed options and corresponding
+                     arguments, if any.
+
+            usage \-\- String with usage information. The string
+                     is compiled using the values found for \(gausagestr\(ga,
+                     \(gadescription\(ga, \(gaoptionList\(ga and \(gausageTextExtra\(ga.
+
+            parentFlags \-\- Dict of registered \(gaflags\(ga of another
+                           \(gaCommandBase\(ga object.
+
+        \(aq\(aq\(aq
+        if not self.args:
+            print(self.usage)
+            return 2
+        elif self.args[0][0] == \(aqh\(aq:
+            cmd = HelpCommand(argv=self.args[1:])
+        elif self.args[0][0] == \(aqv\(aq:
+            cmd = VersionCommand(argv=self.args[1:])
+        else:
+            print(\(aqerror: command {cmd} does not exist\(aq
+                  .format(cmd=self.args[0]))
+            return 1
+
+        # Register a flag of a parent command
+
+        # :Parameters:
+        #     \- \(gaoptionName\(ga: String. Name of option
+        #     \- \(gavalue\(ga: Mixed. Value of parsed flag\(ga
+        cmd.registerParentFlag(\(aqfile\(aq, self.flags[\(aqfile\(aq])
+
+        if cmd.error:
+            print(\(aqfull\-example {cmd}: {error}\(aq
+                  .format(cmd=self.args[0], error=cmd.error))
+            return 1
+        else:
+            return cmd.run()
+
+
+class HelpCommand(pycommand.CommandBase):
+    usagestr = \(aqusage: full\-example help [<command>]\(aq
+    description = \(aqShow help information\(aq
+
+    def run(self):
+        if not self.args or self.args[0][0] == \(aqh\(aq:
+            print(FullExampleCommand([]).usage)
+            return
+        elif self.args[0][0] == \(aqv\(aq:
+            print(VersionCommand([]).usage)
+            return
+        else:
+            print(\(aqerror: command {cmd} does not exist\(aq
+                  .format(cmd=self.args[0]))
+            return 1
+        print(cmd.usage)
+
+
+class VersionCommand(pycommand.CommandBase):
+    usagestr = \(aqusage: full\-example version\(aq
+    description = \(aqShow version information\(aq
+
+    def run(self):
+        print(\(aqPython version \(aq + sys.version.split()[0])
+        print(\(aqFileflag = {0}\(aq.format(self.parentFlags[\(aqfile\(aq]))
+
+
+if __name__ == \(aq__main__\(aq:
+    cmd = FullExampleCommand(sys.argv[1:])
+    if cmd.error:
+        print(\(aqerror: {0}\(aq.format(cmd.error))
+        sys.exit(1)
+    else:
+        sys.exit(cmd.run())
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+And here are some outputs:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ ./full\-example
+usage: full\-example [\-f <filename>] <command> [<args>]
+
+Commands:
+   help         show this help information
+   version      show full version information
+
+Options:
+\-f <filename>, \-\-file=<filename>  use specified file
+
+See \(aqfull\-example help <command>\(aq for more information on a specific command.
+
+$ ./full\-example help version
+usage: full\-example version
+
+Show version information
+
+$ ./full\-example \-f
+error: option \-f requires argument
+
+$ ./full\-example \-f somefilename version
+Python version 3.3.2
+Fileflag = somefilename
+
+$ ./full\-example version
+Python version 3.3.2
+Fileflag = None
+
+$ ./full\-example h doesnotexist
+error: command doesnotexist does not exist
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH MODULE DOCUMENTATION
+.sp
+Create (recursive trees of) executable (sub)commands using minimal code
+.INDENT 0.0
+.TP
+.B class pycommand.CommandBase(argv)
+Base class for (sub)commands
+.INDENT 7.0
+.TP
+.B description = \(aq\(aq
+String. Small description of subcommand
+.UNINDENT
+.INDENT 7.0
+.TP
+.B error = None
+Thrown by GetoptError when parsing illegal arguments.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B flags = None
+Dict of parsed options and corresponding arguments, if any.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B optionList = {}
+Dictionary of options (as list of 2\-tuples).
+This will be transformed to an OrderedDict when initializing the object.
+.sp
+Example:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+optionList = (
+    (\(aqhelp\(aq, (\(aqh\(aq, False, \(aqshow this help information\(aq)),
+    (\(aqdry\-run\(aq, (\(aqn\(aq, False,
+                 \(aqonly print output without actually running\(aq)),
+
+    # To specify that an option requires an argument
+    # just add a string that describes it
+    (\(aqfile\(aq, (\(aqf\(aq, \(aq<filename>\(aq, \(aquse specified file\(aq)),
+
+    # Use an empty string to ommit short option
+    (\(aqdebug\(aq, (\(aq\(aq, False, \(aqshow debug information\(aq)),
+)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B parentFlags = None
+Dict of registered \fIflags\fP of parent Command object.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B registerParentFlag(self, optionName, value)
+Register a flag of a parent command
+.INDENT 7.0
+.TP
+.B Parameters 
+.INDENT 7.0
+.IP \(bu 2
+\fIoptionName\fP: String. Name of option
+.IP \(bu 2
+\fIvalue\fP: Mixed. Value of parsed flag\(ga
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B usage = None
+String with usage information
+.sp
+The string is compiled using the values found for
+\fIusagestr\fP, \fIdescription\fP, \fIoptionList\fP and \fIusageTextExtra\fP\&.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B usageTextExtra = \(aq\(aq
+String. Optional extra usage information
+.UNINDENT
+.INDENT 7.0
+.TP
+.B usagestr = \(aqusage: command [options]\(aq
+String. Usage synopsis
+.UNINDENT
+.UNINDENT
+.SH CONTRIBUTING
+.sp
+You can use Bitbucket or Github for discussing code, reporting bugs and
+sending pull\-requests.
+.INDENT 0.0
+.IP \(bu 2
+Bitbucket: \fI\%https://bitbucket.org/babab/pycommand\fP
+.IP \(bu 2
+Github: \fI\%https://github.com/babab/pycommand\fP
+.UNINDENT
+.SH SOFTWARE LICENSE
+.sp
+Copyright (c) 2013  Benjamin Althues <\fI\%benjamin@babab.nl\fP>
+.sp
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+.sp
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.SH AUTHOR
+Benjamin Althues
+.SH COPYRIGHT
+2013, Benjamin Althues
+.\" Generated by docutils manpage writer.
+.

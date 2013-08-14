@@ -19,7 +19,7 @@ html_theme = 'nature'
 
 man_pages = [
     ('index', 'pycommand', 'pycommand Documentation',
-     ['Benjamin Althues'], 1)
+     ['Benjamin Althues'], 3)
 ]
 
 texinfo_documents = [

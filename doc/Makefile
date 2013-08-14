@@ -18,6 +18,9 @@ text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 man:
 	$(SPHINXBUILD) -b man $(ALLSPHINXOPTS) $(BUILDDIR)/man
+	mv $(BUILDDIR)/man/pycommand.3 ..
+
 info:
 	$(SPHINXBUILD) -b texinfo $(ALLSPHINXOPTS) $(BUILDDIR)/texinfo
 	make -C $(BUILDDIR)/texinfo info
+	mv $(BUILDDIR)/texinfo/pycommand.info ..
