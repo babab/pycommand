@@ -29,11 +29,15 @@ have this in other projects I've decided to put it in the cheeseshop.
 Download and install
 ====================
 
-If you have pip installed, you can just::
+If you have pip installed, you can just:
+
+.. code-block:: console
 
    # pip install pycommand
 
-Otherwise, do something like this::
+Otherwise, do something like this:
+
+.. code-block:: console
 
    $ git clone git://bitbucket.org/babab/pycommand.git
    # cd pycommand
@@ -124,7 +128,9 @@ Here is a typical example of a very common command line interface program::
 
 
 If we name this script ``basic-example`` and execute it, the following will be
-the output for running ``basic-example -h`` or ``basic-example --help``::
+the output for running ``basic-example -h`` or ``basic-example --help``:
+
+.. code-block:: console
 
    usage: basic-example [options]
 
@@ -255,7 +261,9 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
            sys.exit(cmd.run())
 
 
-And here are some outputs::
+And here are some outputs:
+
+.. code-block:: console
 
    $ ./full-example
    usage: full-example [-f <filename>] <command> [<args>]

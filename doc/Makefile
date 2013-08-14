@@ -14,6 +14,8 @@ clean:
 	-rm -rf $(BUILDDIR)
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	echo >> $(BUILDDIR)/html/_static/pygments.css
+	cat pygments-style.css >> $(BUILDDIR)/html/_static/pygments.css
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 man:
