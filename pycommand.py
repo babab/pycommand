@@ -16,6 +16,7 @@
 
 from collections import OrderedDict
 import getopt
+import sys
 
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
@@ -63,6 +64,9 @@ class CommandBase(object):
 
     usageTextExtra = ''
     '''String. Optional extra usage information'''
+
+    commands = {}
+    '''Dictionary of commands and the callables they invoke.'''
 
     def __init__(self, argv):
         '''Initialize (sub)command object
@@ -166,6 +170,17 @@ class CommandBase(object):
                             self.flags[flag] = opt[1]
                         else:
                             self.flags[flag] = True
+
+    def run(self):
+        if not self.args:
+            print(self.usage)
+            sys.exit(2)
+        elif self.args[0] in self.commands:
+            return self.commands[self.args[0]](argv=self.args[1:])
+        else:
+            print('error: command {cmd} does not exist'
+                  .format(cmd=self.args[0]))
+            sys.exit(1)
 
     def registerParentFlag(self, optionName, value):
         '''Register a flag of a parent command
