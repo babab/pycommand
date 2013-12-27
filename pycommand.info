@@ -1,7 +1,7 @@
-This is pycommand.info, produced by makeinfo version 5.1 from
+This is pycommand.info, produced by makeinfo version 5.2 from
 pycommand.texi.
 
-     pycommand 0.1.0, August 14, 2013
+     pycommand 0.1.0, December 27, 2013
 
      Benjamin Althues
 
@@ -21,7 +21,7 @@ File: pycommand.info,  Node: Top,  Next: Why was it created?,  Up: (dir)
 pycommand Documentation
 ***********************
 
-     pycommand 0.1.0, August 14, 2013
+     pycommand 0.1.0, December 27, 2013
 
      Benjamin Althues
 
@@ -195,13 +195,32 @@ with the ‘--help’ and ‘--version’ options replaced for subcommands:
      import sys
 
 
+     class VersionCommand(pycommand.CommandBase):
+         usagestr = 'usage: full-example version'
+         description = 'Show version information'
+
+         def run(self):
+             print('Python version ' + sys.version.split()[0])
+             print('Fileflag = {0}'.format(self.parentFlags['file']))
+
+
+     class HelpCommand(pycommand.CommandBase):
+         usagestr = 'usage: full-example help [<command>]'
+         description = 'Show help information'
+
+         def run(self):
+             if self.args and self.args[0] == 'version':
+                 print(VersionCommand([]).usage)
+             print(cmd.usage)
+
+
      class FullExampleCommand(pycommand.CommandBase):
          '''An full example of a pycommand CLI program
 
-         This is an example that demonstrates the mapping of postional
-         arguments to subcommands, registrering the --file flag from the main
-         command to its subcommand. It only explains new concepts that are
-         not handled in ``basic-example``, so be sure to see that first.
+         This is an example that demonstrates the mapping of subcommands
+         and registrering the --file flag from the main command to its
+         subcommand. It only explains new concepts that are not handled in
+         ``basic-example``, so be sure to see that first.
 
          '''
          usagestr = 'usage: full-example [-f <filename>] <command> [<args>]'
@@ -210,6 +229,11 @@ with the ‘--help’ and ‘--version’ options replaced for subcommands:
              '   help         show this help information\n'
              '   version      show full version information'
          )
+
+         # Mapping of subcommands
+         commands = {'help': HelpCommand,
+                     'version': VersionCommand}
+
          optionList = (('file', ('f', '<filename>', 'use specified file')), )
 
          # Optional extra usage information
@@ -239,20 +263,12 @@ with the ‘--help’ and ‘--version’ options replaced for subcommands:
                                 `CommandBase` object.
 
              '''
-             if not self.args:
-                 print(self.usage)
-                 return 2
-             elif self.args[0][0] == 'h':
-                 cmd = HelpCommand(argv=self.args[1:])
-             elif self.args[0][0] == 'v':
-                 cmd = VersionCommand(argv=self.args[1:])
-             else:
-                 print('error: command {cmd} does not exist'
-                       .format(cmd=self.args[0]))
-                 return 1
+             try:
+                 cmd = super(FullExampleCommand, self).run()
+             except pycommand.CommandExit as e:
+                 return e.err
 
              # Register a flag of a parent command
-
              # :Parameters:
              #     - `optionName`: String. Name of option
              #     - `value`: Mixed. Value of parsed flag`
@@ -264,33 +280,6 @@ with the ‘--help’ and ‘--version’ options replaced for subcommands:
                  return 1
              else:
                  return cmd.run()
-
-
-     class HelpCommand(pycommand.CommandBase):
-         usagestr = 'usage: full-example help [<command>]'
-         description = 'Show help information'
-
-         def run(self):
-             if not self.args or self.args[0][0] == 'h':
-                 print(FullExampleCommand([]).usage)
-                 return
-             elif self.args[0][0] == 'v':
-                 print(VersionCommand([]).usage)
-                 return
-             else:
-                 print('error: command {cmd} does not exist'
-                       .format(cmd=self.args[0]))
-                 return 1
-             print(cmd.usage)
-
-
-     class VersionCommand(pycommand.CommandBase):
-         usagestr = 'usage: full-example version'
-         description = 'Show version information'
-
-         def run(self):
-             print('Python version ' + sys.version.split()[0])
-             print('Fileflag = {0}'.format(self.parentFlags['file']))
 
 
      if __name__ == '__main__':
@@ -331,7 +320,7 @@ with the ‘--help’ and ‘--version’ options replaced for subcommands:
      Python version 3.3.2
      Fileflag = None
 
-     $ ./full-example h doesnotexist
+     $ ./full-example help doesnotexist
      error: command doesnotexist does not exist
 
 
@@ -340,11 +329,19 @@ File: pycommand.info,  Node: Module documentation,  Next: Contributing,  Prev: E
 5 Module documentation
 **********************
 
-Create (recursive trees of) executable (sub)commands using minimal code
+Parse command line arguments / define (sub)commands with minimal code
 
  -- Class: pycommand.CommandBase (argv)
 
      Base class for (sub)commands
+
+      -- Attribute: args
+
+          List of parsed postional arguments
+
+      -- Attribute: commands
+
+          Dictionary of commands and the callables they invoke.
 
       -- Attribute: description
 
@@ -360,7 +357,7 @@ Create (recursive trees of) executable (sub)commands using minimal code
 
       -- Attribute: optionList
 
-          Dictionary of options (as list of 2-tuples).  This will be
+          Dictionary of options (as a tuple of 2-tuples).  This will be
           transformed to an OrderedDict when initializing the object.
 
           Example:
@@ -459,80 +456,88 @@ Index
  [index ]
 * Menu:
 
+* args (pycommand.CommandBase attribute): Module documentation.
+                                                               (line 12)
 * CommandBase (class in pycommand):      Module documentation. (line  8)
 * CommandBase.registerParentFlag() (in module pycommand): Module documentation.
-                                                               (line 48)
-* description (pycommand.CommandBase attribute): Module documentation.
-                                                               (line 12)
-* error (pycommand.CommandBase attribute): Module documentation.
+                                                               (line 56)
+* commands (pycommand.CommandBase attribute): Module documentation.
                                                                (line 16)
-* flags (pycommand.CommandBase attribute): Module documentation.
+* description (pycommand.CommandBase attribute): Module documentation.
                                                                (line 20)
-* optionList (pycommand.CommandBase attribute): Module documentation.
+* error (pycommand.CommandBase attribute): Module documentation.
                                                                (line 24)
+* flags (pycommand.CommandBase attribute): Module documentation.
+                                                               (line 28)
+* optionList (pycommand.CommandBase attribute): Module documentation.
+                                                               (line 32)
 * parentFlags (pycommand.CommandBase attribute): Module documentation.
-                                                               (line 44)
+                                                               (line 52)
 * pycommand (module):                    Module documentation. (line  6)
 * usage (pycommand.CommandBase attribute): Module documentation.
-                                                               (line 58)
+                                                               (line 66)
 * usagestr (pycommand.CommandBase attribute): Module documentation.
-                                                               (line 69)
+                                                               (line 77)
 * usageTextExtra (pycommand.CommandBase attribute): Module documentation.
-                                                               (line 65)
+                                                               (line 73)
 
 
 
 Tag Table:
-Node: Top351
-Ref: index doc580
-Ref: 1580
-Node: Why was it created?1334
-Ref: index why-was-it-created1437
-Ref: 21437
-Ref: index pycommand1437
-Ref: 31437
-Node: Download and install2038
-Ref: index download-and-install2166
-Ref: 42166
-Node: Example #1 - A Basic command2432
-Ref: index example-1-a-basic-command2607
-Ref: 52607
-Node: Example #2 - Full example of one main command with two subcommands6126
-Ref: index example-2-full-example-of-one-main-command-with-two-subcommands6301
-Ref: 66301
-Node: Module documentation11379
-Ref: index module-documentation11538
-Ref: 711538
-Ref: index module-pycommand11538
-Ref: 011538
-Ref: index pycommand CommandBase11658
-Ref: 811658
-Ref: index pycommand CommandBase description11734
-Ref: 911734
-Ref: index pycommand CommandBase error11819
-Ref: a11819
-Ref: index pycommand CommandBase flags11911
-Ref: b11911
-Ref: index pycommand CommandBase optionList12009
-Ref: c12009
-Ref: index pycommand CommandBase parentFlags12777
-Ref: d12777
-Ref: index pycommand CommandBase registerParentFlag12878
-Ref: e12878
-Ref: index pycommand CommandBase usage13148
-Ref: f13148
-Ref: index pycommand CommandBase usageTextExtra13365
-Ref: 1013365
-Ref: index pycommand CommandBase usagestr13454
-Ref: 1113454
-Node: Contributing13519
-Ref: index contributing13628
-Ref: 1213628
-Node: Software license13871
-Ref: index software-license13979
-Ref: 1313979
-Node: Python Module Index14776
-Node: Index14945
+Node: Top353
+Ref: index doc584
+Ref: 1584
+Node: Why was it created?1338
+Ref: index why-was-it-created1441
+Ref: 21441
+Ref: index pycommand1441
+Ref: 31441
+Node: Download and install2042
+Ref: index download-and-install2170
+Ref: 42170
+Node: Example #1 - A Basic command2436
+Ref: index example-1-a-basic-command2611
+Ref: 52611
+Node: Example #2 - Full example of one main command with two subcommands6130
+Ref: index example-2-full-example-of-one-main-command-with-two-subcommands6305
+Ref: 66305
+Node: Module documentation10904
+Ref: index module-documentation11063
+Ref: 711063
+Ref: index module-pycommand11063
+Ref: 011063
+Ref: index pycommand CommandBase11181
+Ref: 811181
+Ref: index pycommand CommandBase args11257
+Ref: 911257
+Ref: index pycommand CommandBase commands11329
+Ref: a11329
+Ref: index pycommand CommandBase description11424
+Ref: b11424
+Ref: index pycommand CommandBase error11509
+Ref: c11509
+Ref: index pycommand CommandBase flags11601
+Ref: d11601
+Ref: index pycommand CommandBase optionList11699
+Ref: e11699
+Ref: index pycommand CommandBase parentFlags12470
+Ref: f12470
+Ref: index pycommand CommandBase registerParentFlag12571
+Ref: 1012571
+Ref: index pycommand CommandBase usage12841
+Ref: 1112841
+Ref: index pycommand CommandBase usageTextExtra13058
+Ref: 1213058
+Ref: index pycommand CommandBase usagestr13147
+Ref: 1313147
+Node: Contributing13212
+Ref: index contributing13321
+Ref: 1413321
+Node: Software license13564
+Ref: index software-license13672
+Ref: 1513672
+Node: Python Module Index14469
+Node: Index14638
 
 End Tag Table
 

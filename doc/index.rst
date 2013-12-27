@@ -154,13 +154,32 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
    import sys
 
 
+   class VersionCommand(pycommand.CommandBase):
+       usagestr = 'usage: full-example version'
+       description = 'Show version information'
+
+       def run(self):
+           print('Python version ' + sys.version.split()[0])
+           print('Fileflag = {0}'.format(self.parentFlags['file']))
+
+
+   class HelpCommand(pycommand.CommandBase):
+       usagestr = 'usage: full-example help [<command>]'
+       description = 'Show help information'
+
+       def run(self):
+           if self.args and self.args[0] == 'version':
+               print(VersionCommand([]).usage)
+           print(cmd.usage)
+
+
    class FullExampleCommand(pycommand.CommandBase):
        '''An full example of a pycommand CLI program
 
-       This is an example that demonstrates the mapping of postional
-       arguments to subcommands, registrering the --file flag from the main
-       command to its subcommand. It only explains new concepts that are
-       not handled in ``basic-example``, so be sure to see that first.
+       This is an example that demonstrates the mapping of subcommands
+       and registrering the --file flag from the main command to its
+       subcommand. It only explains new concepts that are not handled in
+       ``basic-example``, so be sure to see that first.
 
        '''
        usagestr = 'usage: full-example [-f <filename>] <command> [<args>]'
@@ -169,6 +188,11 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
            '   help         show this help information\n'
            '   version      show full version information'
        )
+
+       # Mapping of subcommands
+       commands = {'help': HelpCommand,
+                   'version': VersionCommand}
+
        optionList = (('file', ('f', '<filename>', 'use specified file')), )
 
        # Optional extra usage information
@@ -198,20 +222,12 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
                               `CommandBase` object.
 
            '''
-           if not self.args:
-               print(self.usage)
-               return 2
-           elif self.args[0][0] == 'h':
-               cmd = HelpCommand(argv=self.args[1:])
-           elif self.args[0][0] == 'v':
-               cmd = VersionCommand(argv=self.args[1:])
-           else:
-               print('error: command {cmd} does not exist'
-                     .format(cmd=self.args[0]))
-               return 1
+           try:
+               cmd = super(FullExampleCommand, self).run()
+           except pycommand.CommandExit as e:
+               return e.err
 
            # Register a flag of a parent command
-
            # :Parameters:
            #     - `optionName`: String. Name of option
            #     - `value`: Mixed. Value of parsed flag`
@@ -225,33 +241,6 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
                return cmd.run()
 
 
-   class HelpCommand(pycommand.CommandBase):
-       usagestr = 'usage: full-example help [<command>]'
-       description = 'Show help information'
-
-       def run(self):
-           if not self.args or self.args[0][0] == 'h':
-               print(FullExampleCommand([]).usage)
-               return
-           elif self.args[0][0] == 'v':
-               print(VersionCommand([]).usage)
-               return
-           else:
-               print('error: command {cmd} does not exist'
-                     .format(cmd=self.args[0]))
-               return 1
-           print(cmd.usage)
-
-
-   class VersionCommand(pycommand.CommandBase):
-       usagestr = 'usage: full-example version'
-       description = 'Show version information'
-
-       def run(self):
-           print('Python version ' + sys.version.split()[0])
-           print('Fileflag = {0}'.format(self.parentFlags['file']))
-
-
    if __name__ == '__main__':
        cmd = FullExampleCommand(sys.argv[1:])
        if cmd.error:
@@ -259,7 +248,6 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
            sys.exit(1)
        else:
            sys.exit(cmd.run())
-
 
 And here are some outputs:
 
@@ -293,7 +281,7 @@ And here are some outputs:
    Python version 3.3.2
    Fileflag = None
 
-   $ ./full-example h doesnotexist
+   $ ./full-example help doesnotexist
    error: command doesnotexist does not exist
 
 
