@@ -16,7 +16,6 @@
 
 from collections import OrderedDict
 import getopt
-import sys
 
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
@@ -30,6 +29,14 @@ with very simplistic and readable code. It has support for nesting
 commands, so you can create (multiple levels of) subcommands, with the
 ability to pass the values of optional arguments of a command object to
 its subcommand objects. Supported Python versions are 2.7 and 3.3'''
+
+
+class CommandExit(Exception):
+    def __init__(self, val):
+        self.err = val
+
+    def __str__(self):
+        return repr(self.err)
 
 
 class CommandBase(object):
@@ -174,13 +181,13 @@ class CommandBase(object):
     def run(self):
         if not self.args:
             print(self.usage)
-            sys.exit(2)
+            raise CommandExit(2)
         elif self.args[0] in self.commands:
             return self.commands[self.args[0]](argv=self.args[1:])
         else:
             print('error: command {cmd} does not exist'
                   .format(cmd=self.args[0]))
-            sys.exit(1)
+            raise CommandExit(1)
 
     def registerParentFlag(self, optionName, value):
         '''Register a flag of a parent command
