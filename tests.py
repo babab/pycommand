@@ -12,54 +12,80 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-'''Tests:
+from nose.tools import (
+    eq_,
+    timed,
+    raises,
+)
 
->>> import pycommand
->>> import sys
+import pycommand
 
->>> class BasicExampleCommand(pycommand.CommandBase):
-...     usagestr = 'usage: basic-example [options]'
-...     description = 'small description'
-...     optionList = (
-...         ('help', ('h', False, 'show this help information')),
-...         ('file', ('f', '<filename>', 'use specified file')),
-...         ('version', ('', False, 'show version information')),
-...     )
 
->>> cmd1 = BasicExampleCommand(['-h'])
->>> cmd1.error
->>> print(cmd1.usage)
-usage: basic-example [options]
-<BLANKLINE>
-small description
-<BLANKLINE>
-Options:
--h, --help                        show this help information
--f <filename>, --file=<filename>  use specified file
---version                         show version information
-<BLANKLINE>
->>> cmd1.flags['help']
-True
->>> cmd1.flags['file']
->>> cmd1.flags['version']
+class BasicTestCommand(pycommand.CommandBase):
+    usagestr = 'usage: pycommand-test [options]'
+    description = 'small description'
+    optionList = (
+        ('help', ('h', False, 'show this help information')),
+        ('file', ('f', '<filename>', 'use specified file')),
+        ('version', ('', False, 'show version information')),
+    )
 
->>> cmd2 = BasicExampleCommand(['--file', '/path/to/a/filename', '--version'])
->>> cmd2.error
->>> cmd2.flags['help']
->>> cmd2.flags['file']
-'/path/to/a/filename'
->>> cmd2.flags['version']
-True
 
->>> cmd3 = BasicExampleCommand(['--doesnotexist', '-h', '-f', 'filename',
-...                             '--version'])
->>> cmd3.error
-GetoptError('option --doesnotexist not recognized', 'doesnotexist')
->>> cmd3.flags['help']
->>> cmd3.flags['file']
->>> cmd3.flags['version']
-'''
+@timed(.005)
+@raises(TypeError)
+def test_args_invalid():
+    BasicTestCommand()
 
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+
+@timed(.005)
+def test_args_empty():
+    cmd = BasicTestCommand([])
+    eq_(cmd.flags['help'], None)
+
+
+@timed(.005)
+def test_no_error():
+    cmd = BasicTestCommand(['-h'])
+    eq_(cmd.error, None)
+
+
+@timed(.005)
+def test_flags_short_without_argument():
+    cmd = BasicTestCommand(['-h'])
+    eq_(cmd.flags['help'], True)
+
+    cmd = BasicTestCommand([''])
+    eq_(cmd.flags['help'], None)
+
+
+@timed(.005)
+def test_flags_short_with_argument():
+    cmd = BasicTestCommand(['-f', 'funny-cats.gif'])
+    eq_(cmd.flags['file'], 'funny-cats.gif')
+
+    cmd = BasicTestCommand([''])
+    eq_(cmd.flags['file'], None)
+
+
+@timed(.005)
+def test_flags_mixed1():
+    cmd = BasicTestCommand(['-h'])
+    eq_(cmd.flags['help'], True)
+    eq_(cmd.flags['file'], None)
+    eq_(cmd.flags['version'], None)
+
+
+@timed(.005)
+def test_flags_mixed2():
+    cmd = BasicTestCommand(['-h', '--version'])
+    eq_(cmd.flags['help'], True)
+    eq_(cmd.flags['file'], None)
+    eq_(cmd.flags['version'], True)
+
+
+@timed(.005)
+def test_flags_mixed3():
+    cmd = BasicTestCommand(['-h', '--version', '--file', 'happy-puppies.gif'])
+    eq_(cmd.flags['help'], True)
+    eq_(cmd.flags['file'], 'happy-puppies.gif')
+    eq_(cmd.flags['version'], True)
