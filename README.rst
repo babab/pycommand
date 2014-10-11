@@ -1,8 +1,9 @@
-pycommand
-******************************************************************************
-
 .. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
     :target: https://travis-ci.org/babab/pycommand
+
+
+pycommand
+******************************************************************************
 
 **Parse command line arguments / define (sub)commands with minimal code**
 
@@ -11,7 +12,7 @@ create executable commands for your python programs with very simplistic
 and readable code. It has support for nesting commands, so you can
 create (multiple levels of) subcommands, with the ability to pass the
 values of optional arguments of a command object to its subcommand
-objects. Supported Python versions are 2.7 and 3.3
+objects. Supported Python versions are 2.7, 3.2, 3.3 and 3.4
 
 Why was it created?
 ===================
