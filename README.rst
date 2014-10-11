@@ -1,6 +1,9 @@
 pycommand
 ******************************************************************************
 
+.. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
+    :target: https://travis-ci.org/babab/pycommand
+
 **Parse command line arguments / define (sub)commands with minimal code**
 
 Pycommand consists of one simple `CommandBase` class that you can use to
