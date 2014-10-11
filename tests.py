@@ -15,7 +15,6 @@
 from nose.tools import (
     eq_,
     timed,
-    raises,
 )
 
 import pycommand
@@ -29,12 +28,6 @@ class BasicTestCommand(pycommand.CommandBase):
         ('file', ('f', '<filename>', 'use specified file')),
         ('version', ('', False, 'show version information')),
     )
-
-
-@timed(.005)
-@raises(TypeError)
-def test_args_invalid():
-    BasicTestCommand()
 
 
 @timed(.005)

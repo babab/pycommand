@@ -16,11 +16,12 @@
 
 from collections import OrderedDict
 import getopt
+import sys
 
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
 __copyright__ = "Copyright (C) 2013  Benjamin Althues"
-__version_info__ = (0, 1, 0, 'beta', 0)
+__version_info__ = (0, 1, 0, 'final', 0)
 __version__ = '0.1.0'
 
 long_description = '''Pycommand consists of one simple `CommandBase` class
@@ -75,7 +76,7 @@ class CommandBase(object):
     commands = {}
     '''Dictionary of commands and the callables they invoke.'''
 
-    def __init__(self, argv):
+    def __init__(self, argv=sys.argv[1:]):
         '''Initialize (sub)command object
 
         :Parameters:
