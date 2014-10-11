@@ -1,3 +1,7 @@
+.. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
+    :target: https://travis-ci.org/babab/pycommand
+
+
 pycommand
 ******************************************************************************
 
@@ -42,6 +46,21 @@ Otherwise, do something like this:
    $ git clone git://bitbucket.org/babab/pycommand.git
    # cd pycommand
    # python setup.py install
+
+
+Quick setup from a template
+===========================
+
+To quicly start writing a command from a template (much like the
+examples below), use pycommand's helper script by running:
+
+.. code-block:: console
+
+   $ pycommand init
+
+This will ask you for an executable name, class name and template type
+and it will save it to an executable file, ready to be used as a Python
+shell script (for your Python package/module)).
 
 
 Example #1 - A Basic command

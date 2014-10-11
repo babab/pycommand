@@ -41,8 +41,23 @@ Otherwise, do something like this::
    # python setup.py install
 
 
+Quick setup from a template
+===========================
+
+*(currently only available in the git version)*
+
+To quicly start writing a command from a template (much like the
+example below), just run::
+
+   $ pycommand init
+
+This will ask you for an executable name, class name and template type
+and it will save it to an executable file, ready to be used as a Python
+shell script (for your Python package/module)).
+
+
 Example
-============================
+=======
 
 For full documentation and examples, visit http://pythonhosted.org/pycommand/
 

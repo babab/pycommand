@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+import pycommand
+import sys
+
+
+class $classname(pycommand.CommandBase):
+    '''description of the program, used below as __doc__'''
+    usagestr = 'usage: $name [options]'
+    description = __doc__
+    optionList = (
+        ('help', ('h', False, 'show this help information')),
+        #('file', ('f', '<filename>', 'use specified file')),
+        #('version', ('', False, 'show version information')),
+    )
+
+    def run(self):
+        if self.flags['help']:
+            print(self.usage)
+            return
+        #elif self.flags['version']:
+        #    print('Python version ' + sys.version.split()[0])
+        #    return
+        #elif self.flags['file']:
+        #    print('filename = ' + self.flags['file'])
+        #    return
+
+        print('Program completed. Try adding "--help"')
+
+if __name__ == '__main__':
+    cmd = $classname(sys.argv[1:])
+    if cmd.error:
+        print('error: {0}'.format(cmd.error))
+        sys.exit(1)
+    else:
+        sys.exit(cmd.run())

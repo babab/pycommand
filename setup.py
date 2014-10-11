@@ -28,4 +28,5 @@ setup(
         'Topic :: Terminals',
         'Topic :: Utilities',
     ],
+    scripts=['scripts/pycommand'],
 )

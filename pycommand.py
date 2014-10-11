@@ -21,8 +21,8 @@ import sys
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
 __copyright__ = "Copyright (C) 2013  Benjamin Althues"
-__version_info__ = (0, 1, 0, 'final', 0)
-__version__ = '0.1.0'
+__version_info__ = (0, 2, 0, 'alpha', 0)
+__version__ = '0.2.0-alpha'
 
 long_description = '''Pycommand consists of one simple `CommandBase` class
 that you can use to create executable commands for your python programs

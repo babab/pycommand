@@ -3,5 +3,6 @@ include pycommand.3
 include pycommand.info
 include README.rst
 include tests.py
+recursive-include scripts pycommand
 recursive-include examples basic-example
 recursive-include examples full-example
