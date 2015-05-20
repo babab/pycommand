@@ -179,16 +179,22 @@ class PycommandCommand(pycommand.CommandBase):
 
     def askTemplate(self):
         inp = 0
-        while int(inp) not in range(1, 3):
+        while inp not in range(1, 3):
             print('select a template:')
             print(' 1 - basic')
             print(' 2 - basic (without explaining comments)')
-            inp = input('Enter a number [1-2]: ')
+            try:
+                inp = int(input('Enter a number [1-2]: '))
+            except ValueError:
+                inp = 0
 
+        inp = str(inp)
         if inp == '1':
             self.template = string.Template(templates['basic-with-comments'])
         elif inp == '2':
             self.template = string.Template(templates['basic-no-comments'])
+        else:
+            raise Exception('Invalid template choice')
 
     def save(self):
         basepath = os.path.abspath(os.path.curdir)
@@ -208,8 +214,8 @@ class PycommandCommand(pycommand.CommandBase):
 
         os.chmod(
             dumpfile,
-            os.stat(dumpfile).st_mode
-            | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+            os.stat(dumpfile).st_mode |
+            stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
         )
         print('Written to "' + dumpfile + '"')
         print('Try running it with "' + dumpfile + ' --help"')
