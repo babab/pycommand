@@ -11,7 +11,7 @@ setup(
     download_url='http://pypi.python.org/pypi/pycommand/',
     py_modules=['pycommand'],
     license='ISC',
-    long_description=pycommand.long_description,
+    long_description=open('README.rst').read(),
     platforms='any',
     classifiers=[
         'Development Status :: 4 - Beta',

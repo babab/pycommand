@@ -1,4 +1,4 @@
-'''Parse command line arguments / define (sub)commands with minimal code'''
+'''A clean and simplistic alternative for argparse, optparse and getopt'''
 
 # Copyright (c) 2013-2015  Benjamin Althues <benjamin@babab.nl>
 #
@@ -21,15 +21,8 @@ import sys
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
 __copyright__ = "Copyright (C) 2013-2015  Benjamin Althues"
-__version_info__ = (0, 2, 0, 'alpha', 0)
-__version__ = '0.2.0-alpha'
-
-long_description = '''Pycommand consists of one simple `CommandBase` class
-that you can use to create executable commands for your python programs
-with very simplistic and readable code. It has support for nesting
-commands, so you can create (multiple levels of) subcommands, with the
-ability to pass the values of optional arguments of a command object to
-its subcommand objects. Supported Python versions are 2.7 and 3.3'''
+__version_info__ = (0, 2, 0, 'final', 0)
+__version__ = '0.2.0'
 
 
 class CommandExit(Exception):
