@@ -10,6 +10,7 @@ adheres to [Semantic Versioning](http://semver.org/).
 - Create quick templates via pycommand script (pycommand init)
 - Unit tests and automatic testing via Travis-CI
 - Documentation `man` (.3) and `info` (.info) pages
+
 ### Changed
 - Specification of subcommands can be
   [defined in CommandBase.command](https://github.com/babab/pycommand/commit/a978a05ef92f70f0ce6b06d96a38c2caa8297ecc)
