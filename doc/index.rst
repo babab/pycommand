@@ -8,27 +8,17 @@ pycommand
 .. toctree::
    :maxdepth: 2
 
-**Parse command line arguments / define (sub)commands with minimal code**
+**A clean and simplistic alternative for argparse, optparse and getopt**
 
-Pycommand consists of one simple `CommandBase` class that you can use to
-create executable commands for your python programs with very simplistic
-and readable code. It has support for nesting commands, so you can
-create (multiple levels of) subcommands, with the ability to pass the
-values of optional arguments of a command object to its subcommand
-objects. Supported Python versions are 2.7 and 3.3
+Pycommand is essentially a fancy wrapper around getopt that consists of
+one simple `CommandBase` class that you can use to create executable
+commands for your python programs with very simplistic and readable
+code. It has support for subcommands and also nesting commands, so you
+can create (multiple levels of) subcommands, with the ability to pass
+the values of optional arguments of a command object to its subcommand
+objects. Supported Python versions are 2.7 and 3.2 and later.
 
-Why was it created?
-===================
 
-When parsing command line program arguments, I sometimes work with
-`argparse` (a replacement for `optparse`). I don't really like the API
-and the output it gives, which is the main reason I've always used
-`getopt` for parsing arguments whenever possible.
-
-The `CommandBase` class was originally written for *DisPass*,
-which is a password manager/generator, as a means to easily define new
-subcommands and have auto-generated usage messages. Because I want to
-have this in other projects I've decided to put it in the cheeseshop.
 
 Download and install
 ====================
@@ -311,6 +301,20 @@ Module documentation
    :members:
 
 
+Why was it created?
+===================
+
+When parsing command line program arguments, I sometimes work with
+`argparse` (a replacement for `optparse`). I don't really like the API
+and the output it gives, which is the main reason I've always used
+`getopt` for parsing arguments whenever possible.
+
+The `CommandBase` class was originally written for *DisPass*,
+which is a password manager/generator, as a means to easily define new
+subcommands and have auto-generated usage messages. Because I want to
+have this in other projects I've decided to put it in the cheeseshop.
+
+
 Contributing
 ============
 
@@ -324,7 +328,7 @@ sending pull-requests.
 Software license
 ================
 
-Copyright (c) 2013-2014  Benjamin Althues <benjamin@babab.nl>
+Copyright (c) 2013-2015  Benjamin Althues <benjamin@babab.nl>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above

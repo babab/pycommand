@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "PYCOMMAND" "3" "December 27, 2013" "0.1.0" "pycommand"
+.TH "PYCOMMAND" "3" "May 20, 2015" "0.2.0-alpha" "pycommand"
 .SH NAME
 pycommand \- pycommand Documentation
 .
@@ -30,53 +30,17 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.
-.nr rst2man-indent-level 0
-.
-.de1 rstReportMargin
-\\$1 \\n[an-margin]
-level \\n[rst2man-indent-level]
-level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
--
-\\n[rst2man-indent0]
-\\n[rst2man-indent1]
-\\n[rst2man-indent2]
-..
-.de1 INDENT
-.\" .rstReportMargin pre:
-. RS \\$1
-. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
-. nr rst2man-indent-level +1
-.\" .rstReportMargin post:
-..
-.de UNINDENT
-. RE
-.\" indent \\n[an-margin]
-.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
-.nr rst2man-indent-level -1
-.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
-.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
-..
+\fI\%\fP
 .sp
-\fBParse command line arguments / define (sub)commands with minimal code\fP
+\fBA clean and simplistic alternative for argparse, optparse and getopt\fP
 .sp
-Pycommand consists of one simple \fICommandBase\fP class that you can use to
-create executable commands for your python programs with very simplistic
-and readable code. It has support for nesting commands, so you can
-create (multiple levels of) subcommands, with the ability to pass the
-values of optional arguments of a command object to its subcommand
-objects. Supported Python versions are 2.7 and 3.3
-.SH WHY WAS IT CREATED?
-.sp
-When parsing command line program arguments, I sometimes work with
-\fIargparse\fP (a replacement for \fIoptparse\fP). I don\(aqt really like the API
-and the output it gives, which is the main reason I\(aqve always used
-\fIgetopt\fP for parsing arguments whenever possible.
-.sp
-The \fICommandBase\fP class was originally written for \fIDisPass\fP,
-which is a password manager/generator, as a means to easily define new
-subcommands and have auto\-generated usage messages. Because I want to
-have this in other projects I\(aqve decided to put it in the cheeseshop.
+Pycommand is essentially a fancy wrapper around getopt that consists of
+one simple \fICommandBase\fP class that you can use to create executable
+commands for your python programs with very simplistic and readable
+code. It has support for subcommands and also nesting commands, so you
+can create (multiple levels of) subcommands, with the ability to pass
+the values of optional arguments of a command object to its subcommand
+objects. Supported Python versions are 2.7 and 3.2 and later.
 .SH DOWNLOAD AND INSTALL
 .sp
 If you have pip installed, you can just:
@@ -104,6 +68,24 @@ $ git clone git://bitbucket.org/babab/pycommand.git
 .fi
 .UNINDENT
 .UNINDENT
+.SH QUICK SETUP FROM A TEMPLATE
+.sp
+To quicly start writing a command from a template (much like the
+examples below), use pycommand\(aqs helper script by running:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ pycommand init
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This will ask you for an executable name, class name and template type
+and it will save it to an executable file, ready to be used as a Python
+shell script (for your Python package/module)).
 .SH EXAMPLE #1 - A BASIC COMMAND
 .sp
 Here is a typical example of a very common command line interface program:
@@ -371,7 +353,7 @@ error: command doesnotexist does not exist
 Parse command line arguments / define (sub)commands with minimal code
 .INDENT 0.0
 .TP
-.B class pycommand.CommandBase(argv)
+.B class pycommand.CommandBase(argv=[\(aq\-b\(aq, \(aqman\(aq, \(aq\-d\(aq, \(aq_build/doctrees\(aq, \(aq.\(aq, \(aq_build/man\(aq])
 Base class for (sub)commands
 .INDENT 7.0
 .TP
@@ -438,7 +420,7 @@ Dict of registered \fIflags\fP of parent Command object.
 Register a flag of a parent command
 .INDENT 7.0
 .TP
-.B Parameters 
+.B Parameters
 .INDENT 7.0
 .IP \(bu 2
 \fIoptionName\fP: String. Name of option
@@ -466,6 +448,17 @@ String. Optional extra usage information
 String. Usage synopsis
 .UNINDENT
 .UNINDENT
+.SH WHY WAS IT CREATED?
+.sp
+When parsing command line program arguments, I sometimes work with
+\fIargparse\fP (a replacement for \fIoptparse\fP). I don\(aqt really like the API
+and the output it gives, which is the main reason I\(aqve always used
+\fIgetopt\fP for parsing arguments whenever possible.
+.sp
+The \fICommandBase\fP class was originally written for \fIDisPass\fP,
+which is a password manager/generator, as a means to easily define new
+subcommands and have auto\-generated usage messages. Because I want to
+have this in other projects I\(aqve decided to put it in the cheeseshop.
 .SH CONTRIBUTING
 .sp
 You can use Bitbucket or Github for discussing code, reporting bugs and
@@ -478,7 +471,7 @@ Github: \fI\%https://github.com/babab/pycommand\fP
 .UNINDENT
 .SH SOFTWARE LICENSE
 .sp
-Copyright (c) 2013  Benjamin Althues <\fI\%benjamin@babab.nl\fP>
+Copyright (c) 2013\-2015  Benjamin Althues <\fI\%benjamin@babab.nl\fP>
 .sp
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
