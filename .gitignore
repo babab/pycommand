@@ -5,3 +5,5 @@ Makefile
 MANIFEST
 *.pyc
 __pycache__
+
+/.virtualenv/
