@@ -1,7 +1,7 @@
 This is pycommand.info, produced by makeinfo version 5.2 from
 pycommand.texi.
 
-     pycommand 0.2.0-alpha, May 20, 2015
+     pycommand 0.2.0, May 21, 2015
 
      Benjamin Althues
 
@@ -21,7 +21,7 @@ File: pycommand.info,  Node: Top,  Next: Download and install,  Up: (dir)
 pycommand Documentation
 ***********************
 
-     pycommand 0.2.0-alpha, May 20, 2015
+     pycommand 0.2.0, May 21, 2015
 
      Benjamin Althues
 
@@ -46,6 +46,7 @@ objects.  Supported Python versions are 2.7 and 3.2 and later.
 * Module documentation:: 
 * Why was it created?:: 
 * Contributing:: 
+* Change Log:: 
 * Software license:: 
 * Python Module Index:: 
 * Index:: 
@@ -60,7 +61,7 @@ If you have pip installed, you can just:
 
      # pip install pycommand
 
-Otherwise, do something like this:
+To work with the current development version, do something like this:
 
      $ git clone git://bitbucket.org/babab/pycommand.git
      # cd pycommand
@@ -87,8 +88,23 @@ File: pycommand.info,  Node: Example #1 - A Basic command,  Next: Example #2 - F
 3 Example #1 - A Basic command
 ******************************
 
-Here is a typical example of a very common command line interface
-program:
+Here is a demonstration of the automated usage text generation and
+parsing of optional arguments.
+
+If we name the script for which you can see the code below
+‘basic-example’ and execute it, the following will be the output for
+running ‘basic-example -h’ or ‘basic-example --help’:
+
+     usage: basic-example [options]
+
+     An example of a basic CLI program
+
+     Options:
+     -h, --help                        show this help information
+     -f <filename>, --file=<filename>  use specified file
+     --version                         show version information
+
+And here is the code:
 
      #!/usr/bin/env python
 
@@ -166,19 +182,6 @@ program:
              sys.exit(1)
          else:
              sys.exit(cmd.run())
-
-If we name this script ‘basic-example’ and execute it, the following
-will be the output for running ‘basic-example -h’ or ‘basic-example
---help’:
-
-     usage: basic-example [options]
-
-     An example of a basic CLI program
-
-     Options:
-     -h, --help                        show this help information
-     -f <filename>, --file=<filename>  use specified file
-     --version                         show version information
 
 
 File: pycommand.info,  Node: Example #2 - Full example of one main command with two subcommands,  Next: Module documentation,  Prev: Example #1 - A Basic command,  Up: Top
@@ -290,7 +293,7 @@ with the ‘--help’ and ‘--version’ options replaced for subcommands:
          else:
              sys.exit(cmd.run())
 
-And here are some outputs:
+And here are some output examples:
 
      $ ./full-example
      usage: full-example [-f <filename>] <command> [<args>]
@@ -329,10 +332,10 @@ File: pycommand.info,  Node: Module documentation,  Next: Why was it created?,  
 5 Module documentation
 **********************
 
-Parse command line arguments / define (sub)commands with minimal code
+A clean and simplistic alternative for argparse, optparse and getopt
 
- -- Class: pycommand.CommandBase (argv=['-b', 'man', '-d',
-          '_build/doctrees', '.', '_build/man'])
+ -- Class: pycommand.CommandBase (argv=['-b', 'html', '-d',
+          '_build/doctrees', '.', '_build/html'])
 
      Base class for (sub)commands
 
@@ -423,7 +426,7 @@ and have auto-generated usage messages.  Because I want to have this in
 other projects I’ve decided to put it in the cheeseshop.
 
 
-File: pycommand.info,  Node: Contributing,  Next: Software license,  Prev: Why was it created?,  Up: Top
+File: pycommand.info,  Node: Contributing,  Next: Change Log,  Prev: Why was it created?,  Up: Top
 
 7 Contributing
 **************
@@ -436,9 +439,84 @@ sending pull-requests.
    - Github: ‘https://github.com/babab/pycommand’
 
 
-File: pycommand.info,  Node: Software license,  Next: Python Module Index,  Prev: Contributing,  Up: Top
+File: pycommand.info,  Node: Change Log,  Next: Software license,  Prev: Contributing,  Up: Top
 
-8 Software license
+8 Change Log
+************
+
+All notable changes to pycommand will be documented here.  The project
+adheres to Semantic Versioning(1).
+
+* Menu:
+
+* 0.2.0 - 2015-05-21: 0 2 0 - 2015-05-21. 
+* 0.1.0 - 2013-08-08: 0 1 0 - 2013-08-08. 
+
+   ---------- Footnotes ----------
+
+   (1) http://semver.org/
+
+
+File: pycommand.info,  Node: 0 2 0 - 2015-05-21,  Next: 0 1 0 - 2013-08-08,  Up: Change Log
+
+8.1 0.2.0 - 2015-05-21
+======================
+
+* Menu:
+
+* Added:: 
+* Changed:: 
+
+
+File: pycommand.info,  Node: Added,  Next: Changed,  Up: 0 2 0 - 2015-05-21
+
+8.1.1 Added
+-----------
+
+   - Full example of a command with subcommands
+
+   - Create quick templates via pycommand script (‘pycommand init’)
+
+   - Unit tests and automatic testing via Travis-CI
+
+   - Documentation ‘man’ (.3) and ‘info’ (.info) pages
+
+
+File: pycommand.info,  Node: Changed,  Prev: Added,  Up: 0 2 0 - 2015-05-21
+
+8.1.2 Changed
+-------------
+
+   - Specification of subcommands can be defined in
+     CommandBase.command(1) as a shortcut.
+
+   ---------- Footnotes ----------
+
+   (1) 
+https://github.com/babab/pycommand/commit/a978a05ef92f70f0ce6b06d96a38c2caa8297ecc
+
+
+File: pycommand.info,  Node: 0 1 0 - 2013-08-08,  Prev: 0 2 0 - 2015-05-21,  Up: Change Log
+
+8.2 0.1.0 - 2013-08-08
+======================
+
+* Menu:
+
+* Added: Added<2>. 
+
+
+File: pycommand.info,  Node: Added<2>,  Up: 0 1 0 - 2013-08-08
+
+8.2.1 Added
+-----------
+
+   - Initial release
+
+
+File: pycommand.info,  Node: Software license,  Next: Python Module Index,  Prev: Change Log,  Up: Top
+
+9 Software license
 ******************
 
 Copyright (c) 2013-2015 Benjamin Althues <<benjamin@babab.nl>>
@@ -502,63 +580,85 @@ Index
 
 
 Tag Table:
-Node: Top354
-Ref: index doc587
-Ref: 1587
-Node: Download and install1451
-Ref: index pycommand1562
-Ref: 21562
-Ref: index download-and-install1562
-Ref: 31562
-Node: Quick setup from a template1826
-Ref: index quick-setup-from-a-template1962
-Ref: 41962
-Node: Example #1 - A Basic command2365
-Ref: index example-1-a-basic-command2547
-Ref: 52547
-Node: Example #2 - Full example of one main command with two subcommands6064
-Ref: index example-2-full-example-of-one-main-command-with-two-subcommands6239
-Ref: 66239
-Node: Module documentation10836
-Ref: index module-pycommand11002
-Ref: 011002
-Ref: index module-documentation11002
-Ref: 711002
-Ref: index pycommand CommandBase11120
-Ref: 811120
-Ref: index pycommand CommandBase args11264
-Ref: 911264
-Ref: index pycommand CommandBase commands11343
-Ref: a11343
-Ref: index pycommand CommandBase description11443
-Ref: b11443
-Ref: index pycommand CommandBase error11533
-Ref: c11533
-Ref: index pycommand CommandBase flags11632
-Ref: d11632
-Ref: index pycommand CommandBase optionList11737
-Ref: e11737
-Ref: index pycommand CommandBase parentFlags12513
-Ref: f12513
-Ref: index pycommand CommandBase registerParentFlag12621
-Ref: 1012621
-Ref: index pycommand CommandBase usage12868
-Ref: 1112868
-Ref: index pycommand CommandBase usageTextExtra13092
-Ref: 1213092
-Ref: index pycommand CommandBase usagestr13186
-Ref: 1313186
-Node: Why was it created?13280
-Ref: index why-was-it-created13392
-Ref: 1413392
-Node: Contributing13991
-Ref: index contributing14099
-Ref: 1514099
-Node: Software license14342
-Ref: index software-license14450
-Ref: 1614450
-Node: Python Module Index15248
-Node: Index15417
+Node: Top348
+Ref: index doc575
+Ref: 1575
+Node: Download and install1455
+Ref: index pycommand-0-2-01566
+Ref: 21566
+Ref: index download-and-install1566
+Ref: 31566
+Node: Quick setup from a template1865
+Ref: index quick-setup-from-a-template2001
+Ref: 42001
+Node: Example #1 - A Basic command2404
+Ref: index example-1-a-basic-command2586
+Ref: 52586
+Node: Example #2 - Full example of one main command with two subcommands6185
+Ref: index example-2-full-example-of-one-main-command-with-two-subcommands6360
+Ref: 66360
+Node: Module documentation10965
+Ref: index module-pycommand11131
+Ref: 011131
+Ref: index module-documentation11131
+Ref: 711131
+Ref: index pycommand CommandBase11248
+Ref: 811248
+Ref: index pycommand CommandBase args11394
+Ref: 911394
+Ref: index pycommand CommandBase commands11473
+Ref: a11473
+Ref: index pycommand CommandBase description11573
+Ref: b11573
+Ref: index pycommand CommandBase error11663
+Ref: c11663
+Ref: index pycommand CommandBase flags11762
+Ref: d11762
+Ref: index pycommand CommandBase optionList11867
+Ref: e11867
+Ref: index pycommand CommandBase parentFlags12643
+Ref: f12643
+Ref: index pycommand CommandBase registerParentFlag12751
+Ref: 1012751
+Ref: index pycommand CommandBase usage12998
+Ref: 1112998
+Ref: index pycommand CommandBase usageTextExtra13222
+Ref: 1213222
+Ref: index pycommand CommandBase usagestr13316
+Ref: 1313316
+Node: Why was it created?13410
+Ref: index why-was-it-created13522
+Ref: 1413522
+Node: Contributing14121
+Ref: index contributing14223
+Ref: 1514223
+Node: Change Log14466
+Ref: index change-log14565
+Ref: 1614565
+Ref: Change Log-Footnote-114831
+Node: 0 2 0 - 2015-05-2114858
+Ref: index id114953
+Ref: 1714953
+Node: Added15034
+Ref: index added15113
+Ref: 1815113
+Node: Changed15377
+Ref: index changed15456
+Ref: 1915456
+Ref: Changed-Footnote-115617
+Node: 0 1 0 - 2013-08-0815709
+Ref: index id315804
+Ref: 1a15804
+Ref: index id215804
+Ref: 1b15804
+Node: Added<2>15881
+Ref: index id415947
+Ref: 1c15947
+Node: Software license15994
+Ref: index software-license16100
+Ref: 1d16100
+Node: Python Module Index16898
+Node: Index17067
 
 End Tag Table
 

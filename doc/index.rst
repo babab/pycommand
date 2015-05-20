@@ -1,9 +1,8 @@
+pycommand 0.2.0
+******************************************************************************
+
 .. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
     :target: https://travis-ci.org/babab/pycommand
-
-
-pycommand
-******************************************************************************
 
 .. toctree::
    :maxdepth: 2
@@ -19,7 +18,6 @@ the values of optional arguments of a command object to its subcommand
 objects. Supported Python versions are 2.7 and 3.2 and later.
 
 
-
 Download and install
 ====================
 
@@ -29,7 +27,7 @@ If you have pip installed, you can just:
 
    # pip install pycommand
 
-Otherwise, do something like this:
+To work with the current development version, do something like this:
 
 .. code-block:: console
 
@@ -56,7 +54,27 @@ shell script (for your Python package/module)).
 Example #1 - A Basic command
 ============================
 
-Here is a typical example of a very common command line interface program::
+Here is a demonstration of the automated usage text generation and
+parsing of optional arguments.
+
+If we name the script for which you can see the code below
+``basic-example`` and execute it, the following will be the output for
+running ``basic-example -h`` or ``basic-example --help``:
+
+.. code-block:: console
+
+   usage: basic-example [options]
+
+   An example of a basic CLI program
+
+   Options:
+   -h, --help                        show this help information
+   -f <filename>, --file=<filename>  use specified file
+   --version                         show version information
+
+And here is the code:
+
+.. code-block:: python
 
    #!/usr/bin/env python
 
@@ -136,26 +154,13 @@ Here is a typical example of a very common command line interface program::
            sys.exit(cmd.run())
 
 
-If we name this script ``basic-example`` and execute it, the following will be
-the output for running ``basic-example -h`` or ``basic-example --help``:
-
-.. code-block:: console
-
-   usage: basic-example [options]
-
-   An example of a basic CLI program
-
-   Options:
-   -h, --help                        show this help information
-   -f <filename>, --file=<filename>  use specified file
-   --version                         show version information
-
-
 Example #2 - Full example of one main command with two subcommands
 ==================================================================
 
 Here is a full example demonstrating essentially the same program, but
-with the ``--help`` and ``--version`` options replaced for subcommands::
+with the ``--help`` and ``--version`` options replaced for subcommands:
+
+.. code-block:: python
 
    #!/usr/bin/env python
 
@@ -258,7 +263,7 @@ with the ``--help`` and ``--version`` options replaced for subcommands::
        else:
            sys.exit(cmd.run())
 
-And here are some outputs:
+And here are some output examples:
 
 .. code-block:: console
 
@@ -323,6 +328,9 @@ sending pull-requests.
 
 - Bitbucket: https://bitbucket.org/babab/pycommand
 - Github: https://github.com/babab/pycommand
+
+
+.. include:: ../CHANGELOG.rst
 
 
 Software license

@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "PYCOMMAND" "3" "May 20, 2015" "0.2.0-alpha" "pycommand"
+.TH "PYCOMMAND" "3" "May 21, 2015" "0.2.0" "pycommand"
 .SH NAME
 pycommand \- pycommand Documentation
 .
@@ -55,7 +55,7 @@ If you have pip installed, you can just:
 .UNINDENT
 .UNINDENT
 .sp
-Otherwise, do something like this:
+To work with the current development version, do something like this:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -88,7 +88,31 @@ and it will save it to an executable file, ready to be used as a Python
 shell script (for your Python package/module)).
 .SH EXAMPLE #1 - A BASIC COMMAND
 .sp
-Here is a typical example of a very common command line interface program:
+Here is a demonstration of the automated usage text generation and
+parsing of optional arguments.
+.sp
+If we name the script for which you can see the code below
+\fBbasic\-example\fP and execute it, the following will be the output for
+running \fBbasic\-example \-h\fP or \fBbasic\-example \-\-help\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: basic\-example [options]
+
+An example of a basic CLI program
+
+Options:
+\-h, \-\-help                        show this help information
+\-f <filename>, \-\-file=<filename>  use specified file
+\-\-version                         show version information
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+And here is the code:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -170,26 +194,6 @@ if __name__ == \(aq__main__\(aq:
         sys.exit(1)
     else:
         sys.exit(cmd.run())
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-If we name this script \fBbasic\-example\fP and execute it, the following will be
-the output for running \fBbasic\-example \-h\fP or \fBbasic\-example \-\-help\fP:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-usage: basic\-example [options]
-
-An example of a basic CLI program
-
-Options:
-\-h, \-\-help                        show this help information
-\-f <filename>, \-\-file=<filename>  use specified file
-\-\-version                         show version information
 .ft P
 .fi
 .UNINDENT
@@ -308,7 +312,7 @@ if __name__ == \(aq__main__\(aq:
 .UNINDENT
 .UNINDENT
 .sp
-And here are some outputs:
+And here are some output examples:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -350,10 +354,10 @@ error: command doesnotexist does not exist
 .UNINDENT
 .SH MODULE DOCUMENTATION
 .sp
-Parse command line arguments / define (sub)commands with minimal code
+A clean and simplistic alternative for argparse, optparse and getopt
 .INDENT 0.0
 .TP
-.B class pycommand.CommandBase(argv=[\(aq\-b\(aq, \(aqman\(aq, \(aq\-d\(aq, \(aq_build/doctrees\(aq, \(aq.\(aq, \(aq_build/man\(aq])
+.B class pycommand.CommandBase(argv=[\(aq\-b\(aq, \(aqhtml\(aq, \(aq\-d\(aq, \(aq_build/doctrees\(aq, \(aq.\(aq, \(aq_build/html\(aq])
 Base class for (sub)commands
 .INDENT 7.0
 .TP
@@ -468,6 +472,34 @@ sending pull\-requests.
 Bitbucket: \fI\%https://bitbucket.org/babab/pycommand\fP
 .IP \(bu 2
 Github: \fI\%https://github.com/babab/pycommand\fP
+.UNINDENT
+.SH CHANGE LOG
+.sp
+All notable changes to pycommand will be documented here. The project
+adheres to \fI\%Semantic Versioning\fP\&.
+.SS 0.2.0 \- 2015\-05\-21
+.SS Added
+.INDENT 0.0
+.IP \(bu 2
+Full example of a command with subcommands
+.IP \(bu 2
+Create quick templates via pycommand script (\fBpycommand init\fP)
+.IP \(bu 2
+Unit tests and automatic testing via Travis\-CI
+.IP \(bu 2
+Documentation \fBman\fP (.3) and \fBinfo\fP (.info) pages
+.UNINDENT
+.SS Changed
+.INDENT 0.0
+.IP \(bu 2
+Specification of subcommands can be \fI\%defined in CommandBase.command\fP
+as a shortcut.
+.UNINDENT
+.SS 0.1.0 \- 2013\-08\-08
+.SS Added
+.INDENT 0.0
+.IP \(bu 2
+Initial release
 .UNINDENT
 .SH SOFTWARE LICENSE
 .sp
