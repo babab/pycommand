@@ -126,7 +126,7 @@ sending pull-requests.
 Software license
 ================
 
-Copyright (c) 2013-2014  Benjamin Althues <benjamin@babab.nl>
+Copyright (c) 2013-2015  Benjamin Althues <benjamin@babab.nl>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
