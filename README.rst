@@ -1,4 +1,4 @@
-pycommand 0.2.0
+pycommand 0.3.0-dev
 ******************************************************************************
 
 .. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
@@ -13,6 +13,12 @@ code. It has support for subcommands and also nesting commands, so you
 can create (multiple levels of) subcommands, with the ability to pass
 the values of optional arguments of a command object to its subcommand
 objects. Supported Python versions are 2.7 and 3.2 and later.
+
+
+.. note::
+
+   This README reflects the development version. For the latest release
+   documentation, visit http://pythonhosted.org/pycommand/
 
 
 Download and install
@@ -105,12 +111,8 @@ And here is the code:
            print('Program completed. Try adding "--help"')
 
    if __name__ == '__main__':
-       cmd = BasicExampleCommand(sys.argv[1:])
-       if cmd.error:
-           print('error: {0}'.format(cmd.error))
-           sys.exit(1)
-       else:
-           sys.exit(cmd.run())
+       # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+       pycommand.run_and_exit(BasicExampleCommand)
 
 
 Why was it created?

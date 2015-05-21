@@ -21,8 +21,8 @@ import sys
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
 __copyright__ = "Copyright (C) 2013-2015  Benjamin Althues"
-__version_info__ = (0, 2, 0, 'final', 0)
-__version__ = '0.2.0'
+__version_info__ = (0, 3, 0, 'alpha', 0)
+__version__ = '0.3.0-dev'
 
 
 class CommandExit(Exception):
@@ -192,3 +192,13 @@ class CommandBase(object):
         '''
         self.parentFlags.update({optionName: value})
         return self
+
+
+def run_and_exit(command_class):
+    '''A shortcut for reading from sys.argv and exiting the interpreter'''
+    cmd = command_class(sys.argv[1:])
+    if cmd.error:
+        print('error: {0}'.format(cmd.error))
+        sys.exit(1)
+    else:
+        sys.exit(cmd.run())

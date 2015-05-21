@@ -1,4 +1,4 @@
-pycommand 0.2.0
+pycommand 0.3.0-dev
 ******************************************************************************
 
 .. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
@@ -146,12 +146,8 @@ And here is the code:
            print('Program completed. Try adding "--help"')
 
    if __name__ == '__main__':
-       cmd = BasicExampleCommand(sys.argv[1:])
-       if cmd.error:
-           print('error: {0}'.format(cmd.error))
-           sys.exit(1)
-       else:
-           sys.exit(cmd.run())
+       # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+       pycommand.run_and_exit(BasicExampleCommand)
 
 
 Example #2 - Full example of one main command with two subcommands
@@ -256,12 +252,9 @@ with the ``--help`` and ``--version`` options replaced for subcommands:
 
 
    if __name__ == '__main__':
-       cmd = FullExampleCommand(sys.argv[1:])
-       if cmd.error:
-           print('error: {0}'.format(cmd.error))
-           sys.exit(1)
-       else:
-           sys.exit(cmd.run())
+       # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+       pycommand.run_and_exit(FullExampleCommand)
+
 
 And here are some output examples:
 

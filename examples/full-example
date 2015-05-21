@@ -90,9 +90,5 @@ class FullExampleCommand(pycommand.CommandBase):
 
 
 if __name__ == '__main__':
-    cmd = FullExampleCommand(sys.argv[1:])
-    if cmd.error:
-        print('error: {0}'.format(cmd.error))
-        sys.exit(1)
-    else:
-        sys.exit(cmd.run())
+    # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+    pycommand.run_and_exit(FullExampleCommand)

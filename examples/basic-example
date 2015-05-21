@@ -66,9 +66,5 @@ class BasicExampleCommand(pycommand.CommandBase):
         print('Program completed. Try adding "--help"')
 
 if __name__ == '__main__':
-    cmd = BasicExampleCommand(sys.argv[1:])
-    if cmd.error:
-        print('error: {0}'.format(cmd.error))
-        sys.exit(1)
-    else:
-        sys.exit(cmd.run())
+    # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+    pycommand.run_and_exit(BasicExampleCommand)
