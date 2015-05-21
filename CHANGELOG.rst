@@ -5,6 +5,15 @@ All notable changes to pycommand will be documented here. The project
 adheres to `Semantic Versioning <http://semver.org/>`_.
 
 
+0.3.0-dev - Development version - UNRELEASED
+--------------------------------------------
+
+Added
+#####
+- Shortcut ``run_and_exit()`` for reading from sys.argv[1:] and exiting
+  the interpreter via sys.exit(status)
+
+
 0.2.0 - 2015-05-21
 ------------------
 
