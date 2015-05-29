@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
-from pycommand import __version__ as pycommand_version
+import pycommand
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
 project = 'pycommand'
-copyright = '2013, Benjamin Althues'
-version = pycommand_version
-release = pycommand_version
+copyright = '2013-2015, Benjamin Althues'
+version = pycommand.__version__
+release = pycommand.__version__
 exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 html_theme = 'nature'
@@ -24,6 +22,6 @@ man_pages = [
 
 texinfo_documents = [
     ('index', 'pycommand', 'pycommand Documentation',
-     'Benjamin Althues', 'pycommand', 'One line description of project.',
+     'Benjamin Althues', 'pycommand', pycommand.__doc__,
      'Miscellaneous'),
 ]
