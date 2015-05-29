@@ -29,7 +29,6 @@ templates = {}
 templates['basic-with-comments'] = """#!/usr/bin/env python
 
 import pycommand
-import sys
 
 
 class $classname(pycommand.CommandBase):
@@ -48,13 +47,13 @@ class $classname(pycommand.CommandBase):
         # To specify that an option requires an argument just add a
         # string that describes it
 
-        #('file', ('f', '<filename>', 'use specified file')),
+        # ('file', ('f', '<filename>', 'use specified file')),
 
         # Use an empty string to ommit short option. Long option names
         # cannot be ommitted, since they are used as dictionary keys in
         # `self.flags` which holds the validated input
 
-        #('version', ('', False, 'show version information')),
+        # ('version', ('', False, 'show version information')),
     )
 
     def run(self):
@@ -71,7 +70,7 @@ class $classname(pycommand.CommandBase):
             error -- Thrown by GetoptError when parsing illegal
                      arguments
 
-            flags -- OrderedDict of parsed options and corresponding
+            flags -- Object/dict of parsed options and corresponding
                      arguments, if any.
 
             usage -- String with usage information. The string
@@ -79,15 +78,15 @@ class $classname(pycommand.CommandBase):
                      `description`, `optionList` and `usageTextExtra`.
 
         '''
-        if self.flags['help']:
+        if self.flags.help:
             print(self.usage)
             return
-        #elif self.flags['version']:
-        #    print('Python version ' + sys.version.split()[0])
-        #    return
-        #elif self.flags['file']:
-        #    print('filename = ' + self.flags['file'])
-        #    return
+        # elif self.flags.version:
+        #     print('Python version ' + sys.version.split()[0])
+        #     return
+        # elif self.flags.file:
+        #     print('filename = ' + self.flags.file)
+        #     return
 
         print('Program completed. Try adding "--help"')
 
@@ -108,7 +107,6 @@ if __name__ == '__main__':
 templates['basic-no-comments'] = """#!/usr/bin/env python
 
 import pycommand
-import sys
 
 
 class $classname(pycommand.CommandBase):
@@ -117,20 +115,20 @@ class $classname(pycommand.CommandBase):
     description = __doc__
     optionList = (
         ('help', ('h', False, 'show this help information')),
-        #('file', ('f', '<filename>', 'use specified file')),
-        #('version', ('', False, 'show version information')),
+        # ('file', ('f', '<filename>', 'use specified file')),
+        # ('version', ('', False, 'show version information')),
     )
 
     def run(self):
-        if self.flags['help']:
+        if self.flags.help:
             print(self.usage)
             return
-        #elif self.flags['version']:
-        #    print('Python version ' + sys.version.split()[0])
-        #    return
-        #elif self.flags['file']:
-        #    print('filename = ' + self.flags['file'])
-        #    return
+        # elif self.flags.version:
+        #     print('Python version ' + sys.version.split()[0])
+        #     return
+        # elif self.flags.file:
+        #     print('filename = ' + self.flags.file)
+        #     return
 
         print('Program completed. Try adding "--help"')
 

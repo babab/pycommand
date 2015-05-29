@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import pycommand
-import sys
 
 
 class $classname(pycommand.CommandBase):
@@ -10,20 +9,20 @@ class $classname(pycommand.CommandBase):
     description = __doc__
     optionList = (
         ('help', ('h', False, 'show this help information')),
-        #('file', ('f', '<filename>', 'use specified file')),
-        #('version', ('', False, 'show version information')),
+        # ('file', ('f', '<filename>', 'use specified file')),
+        # ('version', ('', False, 'show version information')),
     )
 
     def run(self):
-        if self.flags['help']:
+        if self.flags.help:
             print(self.usage)
             return
-        #elif self.flags['version']:
-        #    print('Python version ' + sys.version.split()[0])
-        #    return
-        #elif self.flags['file']:
-        #    print('filename = ' + self.flags['file'])
-        #    return
+        # elif self.flags.version:
+        #     print('Python version ' + sys.version.split()[0])
+        #     return
+        # elif self.flags.file:
+        #     print('filename = ' + self.flags.file)
+        #     return
 
         print('Program completed. Try adding "--help"')
 
