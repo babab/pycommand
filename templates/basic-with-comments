@@ -65,7 +65,7 @@ class $classname(pycommand.CommandBase):
 
 if __name__ == '__main__':
     # Shortcut for reading from sys.argv[1:] and sys.exit(status)
-    pycommand.run_and_exit(BasicExampleCommand)
+    pycommand.run_and_exit($classname)
 
     # The shortcut is equivalent to the following:
 
