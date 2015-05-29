@@ -102,14 +102,14 @@ And here is the code:
        )
 
        def run(self):
-           if self.flags['help']:
+           if self.flags.help:
                print(self.usage)
                return 0
-           elif self.flags['version']:
+           elif self.flags.version:
                print('Python version ' + sys.version.split()[0])
                return 0
-           elif self.flags['file']:
-               print('filename = ' + self.flags['file'])
+           elif self.flags.file:
+               print('filename = ' + self.flags.file)
                return 0
 
            print('Program completed. Try adding "--help"')

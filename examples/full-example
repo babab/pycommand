@@ -59,7 +59,7 @@ class FullExampleCommand(pycommand.CommandBase):
             error -- Thrown by GetoptError when parsing illegal
                      arguments
 
-            flags -- OrderedDict of parsed options and corresponding
+            flags -- Object/dict of parsed options and corresponding
                      arguments, if any.
 
             usage -- String with usage information. The string
@@ -79,7 +79,7 @@ class FullExampleCommand(pycommand.CommandBase):
         # :Parameters:
         #     - `optionName`: String. Name of option
         #     - `value`: Mixed. Value of parsed flag`
-        cmd.registerParentFlag('file', self.flags['file'])
+        cmd.registerParentFlag('file', self.flags.file)
 
         if cmd.error:
             print('full-example {cmd}: {error}'

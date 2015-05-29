@@ -130,7 +130,7 @@ And here is the code:
                error -- Thrown by GetoptError when parsing illegal
                         arguments
 
-               flags -- OrderedDict of parsed options and corresponding
+               flags -- Object/dict of parsed options and corresponding
                         arguments, if any.
 
                usage -- String with usage information. The string
@@ -138,14 +138,14 @@ And here is the code:
                         `description`, `optionList` and `usageTextExtra`.
 
            '''
-           if self.flags['help']:
+           if self.flags.help:
                print(self.usage)
                return
-           elif self.flags['version']:
+           elif self.flags.version:
                print('Python version ' + sys.version.split()[0])
                return
-           elif self.flags['file']:
-               print('filename = ' + self.flags['file'])
+           elif self.flags.file:
+               print('filename = ' + self.flags.file)
                return
 
            print('Program completed. Try adding "--help"')
@@ -255,7 +255,7 @@ with the ``--help`` and ``--version`` options replaced for subcommands:
            # :Parameters:
            #     - `optionName`: String. Name of option
            #     - `value`: Mixed. Value of parsed flag`
-           cmd.registerParentFlag('file', self.flags['file'])
+           cmd.registerParentFlag('file', self.flags.file)
 
            if cmd.error:
                print('full-example {cmd}: {error}'

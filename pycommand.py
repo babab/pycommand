@@ -33,6 +33,19 @@ class CommandExit(Exception):
         return repr(self.err)
 
 
+class OptionError(AttributeError):
+    '''Options/Flags AttributeError exception'''
+
+
+class dictobject(dict):
+    '''A dictionary with getters by attribute, used for flags '''
+    def __getattr__(self, name):
+        if name in self:
+            return self[name]
+        else:
+            raise OptionError("Option '{}' is not defined".format(name))
+
+
 class CommandBase(object):
     '''Base class for (sub)commands'''
 
@@ -171,6 +184,9 @@ class CommandBase(object):
                             self.flags[flag] = opt[1]
                         else:
                             self.flags[flag] = True
+
+        # Convert to dictobject to allow getting flags by attribute name
+        self.flags = dictobject(self.flags)
 
     def run(self):
         if not self.args:

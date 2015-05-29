@@ -11,8 +11,11 @@ Added
 #####
 - Shortcut ``run_and_exit()`` for reading from ``sys.argv[1:]`` and exiting
   the interpreter via ``sys.exit(status)``
-- Package as (source and) wheel distribution to speed up installations
-- Install ``man`` page in ``/usr/share/man3/``
+- Add support for getting flags by attribute like ``self.flags.help``.
+  The default approach for normal dicts like ``self.flags['help']``
+  remains valid.
+- Package as wheel distribution to speed up installations
+- Add ``man pycommand`` ability, i.e. install mandoc in ``/usr/share/man3/``
 
 
 0.2.0 - 2015-05-21

@@ -14,6 +14,7 @@
 
 from nose.tools import (
     eq_,
+    raises,
     timed,
 )
 
@@ -82,3 +83,17 @@ def test_flags_mixed3():
     eq_(cmd.flags['help'], True)
     eq_(cmd.flags['file'], 'happy-puppies.gif')
     eq_(cmd.flags['version'], True)
+
+
+@timed(.005)
+def test_flags_attributes():
+    cmd = BasicTestCommand(['-h'])
+    eq_(cmd.flags.help, True)
+    eq_(cmd.flags.file, None)
+    eq_(cmd.flags.version, None)
+
+
+@raises(pycommand.OptionError)
+def test_flags_attribute_not_existing():
+    cmd = BasicTestCommand(['-h'])
+    eq_(cmd.flags.tsixetonseod, None)
