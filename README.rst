@@ -14,6 +14,10 @@ can create (multiple levels of) subcommands, with the ability to pass
 the values of optional arguments of a command object to its subcommand
 objects. Supported Python versions are 2.7 and 3.2 and later.
 
+- PyPI: https://pypi.python.org/pypi/pycommand/
+- User and API docs: http://pythonhosted.org/pycommand/
+- Bitbucket: https://bitbucket.org/babab/pycommand
+- Github: https://github.com/babab/pycommand
 
 .. note::
 
@@ -36,7 +40,7 @@ To work with the current development version, do something like this:
 
    $ git clone git://bitbucket.org/babab/pycommand.git
    # cd pycommand
-   # python setup.py install
+   # pip install --upgrade -e .
 
 
 Quick setup from a template
@@ -114,6 +118,15 @@ And here is the code:
        # Shortcut for reading from sys.argv[1:] and sys.exit(status)
        pycommand.run_and_exit(BasicExampleCommand)
 
+       # The shortcut is equivalent to the following:
+
+       # cmd = $classname(sys.argv[1:])
+       # if cmd.error:
+       #     print('error: {0}'.format(cmd.error))
+       #     sys.exit(1)
+       # else:
+       #     sys.exit(cmd.run())
+
 
 Why was it created?
 ===================
@@ -127,16 +140,6 @@ The `CommandBase` class was originally written for *DisPass*,
 which is a password manager/generator, as a means to easily define new
 subcommands and have auto-generated usage messages. Because I want to
 have this in other projects I've decided to put it in the cheeseshop.
-
-
-Contributing
-============
-
-You can use Bitbucket or Github for discussing code, reporting bugs and
-sending pull-requests.
-
-- Bitbucket: https://bitbucket.org/babab/pycommand
-- Github: https://github.com/babab/pycommand
 
 
 Software license

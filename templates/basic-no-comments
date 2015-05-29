@@ -28,9 +28,4 @@ class $classname(pycommand.CommandBase):
         print('Program completed. Try adding "--help"')
 
 if __name__ == '__main__':
-    cmd = $classname(sys.argv[1:])
-    if cmd.error:
-        print('error: {0}'.format(cmd.error))
-        sys.exit(1)
-    else:
-        sys.exit(cmd.run())
+    pycommand.run_and_exit($classname)
