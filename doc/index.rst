@@ -156,7 +156,7 @@ And here is the code:
 
        # The shortcut is equivalent to the following:
 
-       # cmd = $classname(sys.argv[1:])
+       # cmd = BasicExampleCommand(sys.argv[1:])
        # if cmd.error:
        #     print('error: {0}'.format(cmd.error))
        #     sys.exit(1)
