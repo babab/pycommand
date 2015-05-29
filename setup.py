@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 import pycommand
 
 setup(
@@ -7,14 +7,21 @@ setup(
     description=pycommand.__doc__,
     author=pycommand.__author__,
     author_email='benjamin@babab.nl',
-    url='http://babab.nl/',
+    url='https://github.com/babab/pycommand',
     download_url='http://pypi.python.org/pypi/pycommand/',
     py_modules=['pycommand'],
     license='ISC',
-    long_description=open('README.rst').read(),
+    long_description='{}\n{}'.format(open('README.rst').read(),
+                                     open('CHANGELOG.rst').read()),
     platforms='any',
+    scripts=['scripts/pycommand'],
+    data_files=[
+        ('share/pycommand/examples', ['examples/basic-example',
+                                      'examples/full-example']),
+        ('share/pycommand', ['LICENSE', 'README.rst'])
+    ],
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: ISC License (ISCL)',
@@ -27,6 +34,7 @@ setup(
         'Topic :: System :: Software Distribution',
         'Topic :: Terminals',
         'Topic :: Utilities',
+
+        'BLOCK FOR UPLOAD',
     ],
-    scripts=['scripts/pycommand'],
 )

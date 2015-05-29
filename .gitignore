@@ -7,3 +7,4 @@ MANIFEST
 __pycache__
 
 /.virtualenv/
+/pycommand.egg-info/

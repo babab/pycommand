@@ -12,6 +12,7 @@ Added
 #####
 - Shortcut ``run_and_exit()`` for reading from sys.argv[1:] and exiting
   the interpreter via sys.exit(status)
+- Package as (source and) wheel distribution to speed up installations
 
 
 0.2.0 - 2015-05-21
