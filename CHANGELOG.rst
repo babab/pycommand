@@ -1,18 +1,18 @@
 Change Log
 ==========
 
-All notable changes to pycommand will be documented here. The project
-adheres to `Semantic Versioning <http://semver.org/>`_.
+pycommand adheres to `Semantic Versioning <http://semver.org/>`_.
 
 
-0.3.0-dev - Development version - UNRELEASED
---------------------------------------------
+0.3.0 - Development version - UNRELEASED
+----------------------------------------
 
 Added
 #####
-- Shortcut ``run_and_exit()`` for reading from sys.argv[1:] and exiting
-  the interpreter via sys.exit(status)
+- Shortcut ``run_and_exit()`` for reading from ``sys.argv[1:]`` and exiting
+  the interpreter via ``sys.exit(status)``
 - Package as (source and) wheel distribution to speed up installations
+- Install ``man`` page in ``/usr/share/man3/``
 
 
 0.2.0 - 2015-05-21
