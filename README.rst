@@ -3,6 +3,11 @@ pycommand 0.3.0
 
 .. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
     :target: https://travis-ci.org/babab/pycommand
+    :alt: Build Status
+
+.. image:: https://readthedocs.org/projects/pycommand/badge/?version=stable
+    :target: https://readthedocs.org/projects/pycommand/?badge=stable
+    :alt: Documentation Status
 
 **A clean and simplistic alternative for argparse, optparse and getopt**
 
@@ -14,15 +19,11 @@ can create (multiple levels of) subcommands, with the ability to pass
 the values of optional arguments of a command object to its subcommand
 objects. Supported Python versions are 2.7 and 3.2 and later.
 
-- PyPI: https://pypi.python.org/pypi/pycommand/
-- User and API docs: http://pythonhosted.org/pycommand/
-- Bitbucket: https://bitbucket.org/babab/pycommand
 - Github: https://github.com/babab/pycommand
-
-.. note::
-
-   This README reflects the development version. For the latest release
-   documentation, visit http://pythonhosted.org/pycommand/
+- Bitbucket: https://bitbucket.org/babab/pycommand
+- PyPI: https://pypi.python.org/pypi/pycommand/
+- Documentation (latest stable PyPI version) - http://pythonhosted.org/pycommand/
+- Documentation (all versions) - http://pycommand.readthedocs.org
 
 
 Download and install
@@ -40,7 +41,7 @@ To work with the current development version, do something like this:
 
    $ git clone git://bitbucket.org/babab/pycommand.git
    # cd pycommand
-   # pip install --upgrade -e .
+   # pip install -e .
 
 
 Quick setup from a template

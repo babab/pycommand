@@ -21,7 +21,7 @@ import sys
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
 __copyright__ = "Copyright (C) 2013-2015  Benjamin Althues"
-__version_info__ = (0, 3, 0, 'alpha', 0)
+__version_info__ = (0, 3, 0, 'beta', 0)
 __version__ = '0.3.0'
 
 

@@ -4,18 +4,21 @@ Change Log
 pycommand adheres to `Semantic Versioning <http://semver.org/>`_.
 
 
-0.3.0 - Development version - UNRELEASED
-----------------------------------------
+0.3.0 - 2015-06-04
+------------------
 
 Added
 #####
 - Shortcut ``run_and_exit()`` for reading from ``sys.argv[1:]`` and exiting
   the interpreter via ``sys.exit(status)``
+- Package as wheel distribution to speed up installations
+- Add ``man pycommand`` ability, i.e. install mandoc in ``/usr/share/man3/``
+
+Changed
+#######
 - Add support for getting flags by attribute like ``self.flags.help``.
   The default approach for normal dicts like ``self.flags['help']``
   remains valid.
-- Package as wheel distribution to speed up installations
-- Add ``man pycommand`` ability, i.e. install mandoc in ``/usr/share/man3/``
 
 
 0.2.0 - 2015-05-21

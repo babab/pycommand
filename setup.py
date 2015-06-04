@@ -35,7 +35,5 @@ setup(
         'Topic :: System :: Software Distribution',
         'Topic :: Terminals',
         'Topic :: Utilities',
-
-        'BLOCK FOR UPLOAD',
     ],
 )
