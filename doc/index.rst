@@ -140,13 +140,13 @@ And here is the code:
            '''
            if self.flags.help:
                print(self.usage)
-               return
+               return 0
            elif self.flags.version:
                print('Python version ' + sys.version.split()[0])
-               return
+               return 0
            elif self.flags.file:
                print('filename = ' + self.flags.file)
-               return
+               return 0
 
            print('Program completed. Try adding "--help"')
 

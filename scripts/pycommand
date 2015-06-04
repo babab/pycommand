@@ -80,13 +80,13 @@ class $classname(pycommand.CommandBase):
         '''
         if self.flags.help:
             print(self.usage)
-            return
+            return 0
         # elif self.flags.version:
         #     print('Python version ' + sys.version.split()[0])
-        #     return
+        #     return 0
         # elif self.flags.file:
         #     print('filename = ' + self.flags.file)
-        #     return
+        #     return 0
 
         print('Program completed. Try adding "--help"')
 
@@ -122,13 +122,13 @@ class $classname(pycommand.CommandBase):
     def run(self):
         if self.flags.help:
             print(self.usage)
-            return
+            return 0
         # elif self.flags.version:
         #     print('Python version ' + sys.version.split()[0])
-        #     return
+        #     return 0
         # elif self.flags.file:
         #     print('filename = ' + self.flags.file)
-        #     return
+        #     return 0
 
         print('Program completed. Try adding "--help"')
 
@@ -156,19 +156,16 @@ class PycommandCommand(pycommand.CommandBase):
     def run(self):
         if self.flags['version']:
             print('pycommand version ' + pycommand.__version__)
-            return
+            return 0
 
         if self.flags['help'] or not self.args or self.args[0] != 'init':
             print(self.usage)
-            return
+            return 0
 
         self.askVar('name', 'name of executable')
         self.askVar('classname', 'name of class')
         self.askTemplate()
-        if self.save():
-            return 0
-        else:
-            return 1
+        return 0 if self.save() else 1
 
     def askVar(self, varName, question):
         inp = input(question + ' [{}]: '.format(self.variables[varName]))
