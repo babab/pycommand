@@ -15,7 +15,6 @@
 from nose.tools import (
     eq_,
     raises,
-    timed,
 )
 
 import pycommand
@@ -31,19 +30,16 @@ class BasicTestCommand(pycommand.CommandBase):
     )
 
 
-@timed(.005)
 def test_args_empty():
     cmd = BasicTestCommand([])
     eq_(cmd.flags['help'], None)
 
 
-@timed(.005)
 def test_no_error():
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.error, None)
 
 
-@timed(.005)
 def test_flags_short_without_argument():
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags['help'], True)
@@ -52,7 +48,6 @@ def test_flags_short_without_argument():
     eq_(cmd.flags['help'], None)
 
 
-@timed(.005)
 def test_flags_short_with_argument():
     cmd = BasicTestCommand(['-f', 'funny-cats.gif'])
     eq_(cmd.flags['file'], 'funny-cats.gif')
@@ -61,7 +56,6 @@ def test_flags_short_with_argument():
     eq_(cmd.flags['file'], None)
 
 
-@timed(.005)
 def test_flags_mixed1():
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags['help'], True)
@@ -69,7 +63,6 @@ def test_flags_mixed1():
     eq_(cmd.flags['version'], None)
 
 
-@timed(.005)
 def test_flags_mixed2():
     cmd = BasicTestCommand(['-h', '--version'])
     eq_(cmd.flags['help'], True)
@@ -77,7 +70,6 @@ def test_flags_mixed2():
     eq_(cmd.flags['version'], True)
 
 
-@timed(.005)
 def test_flags_mixed3():
     cmd = BasicTestCommand(['-h', '--version', '--file', 'happy-puppies.gif'])
     eq_(cmd.flags['help'], True)
@@ -85,7 +77,6 @@ def test_flags_mixed3():
     eq_(cmd.flags['version'], True)
 
 
-@timed(.005)
 def test_flags_attributes():
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags.help, True)
