@@ -5,10 +5,6 @@ pycommand 0.3.0
     :target: https://travis-ci.org/babab/pycommand
     :alt: Build Status
 
-.. image:: https://readthedocs.org/projects/pycommand/badge/?version=stable
-    :target: https://readthedocs.org/projects/pycommand/?badge=stable
-    :alt: Documentation Status
-
 **A clean and simplistic alternative for argparse, optparse and getopt**
 
 Pycommand is essentially a fancy wrapper around getopt that consists of
@@ -22,8 +18,7 @@ objects. Supported Python versions are 2.7 and 3.2 and later.
 - Github: https://github.com/babab/pycommand
 - Bitbucket: https://bitbucket.org/babab/pycommand
 - PyPI: https://pypi.python.org/pypi/pycommand/
-- Documentation (latest stable PyPI version) - http://pythonhosted.org/pycommand/
-- Documentation (all versions) - http://pycommand.readthedocs.org
+- Documentation: http://pythonhosted.org/pycommand/
 
 
 Download and install

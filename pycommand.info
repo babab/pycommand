@@ -44,10 +44,7 @@ objects.  Supported Python versions are 2.7 and 3.2 and later.
 
    - PyPI: ‘https://pypi.python.org/pypi/pycommand/’
 
-   - Documentation (latest stable PyPI version) -
-     ‘http://pythonhosted.org/pycommand/’
-
-   - Documentation (all versions) - ‘http://pycommand.readthedocs.org’
+   - Documentation: ‘http://pythonhosted.org/pycommand/’
 
 * Menu:
 
@@ -632,94 +629,94 @@ Tag Table:
 Node: Top414
 Ref: index doc647
 Ref: 1647
-Node: Download and install1856
-Ref: index download-and-install1967
-Ref: 21967
-Ref: index pycommand-0-3-01967
-Ref: 31967
-Node: Quick setup from a template2259
-Ref: index quick-setup-from-a-template2395
-Ref: 42395
-Node: Example #1 - A Basic command2798
-Ref: index example-1-a-basic-command2980
-Ref: 52980
-Node: Example #2 - Full example of one main command with two subcommands6767
-Ref: index example-2-full-example-of-one-main-command-with-two-subcommands6942
-Ref: 66942
-Node: Module documentation11472
-Ref: index module-documentation11638
-Ref: 711638
-Ref: index module-pycommand11638
-Ref: 011638
-Ref: index pycommand CommandBase11755
-Ref: 811755
-Ref: index pycommand CommandBase args11899
-Ref: 911899
-Ref: index pycommand CommandBase commands11978
-Ref: a11978
-Ref: index pycommand CommandBase description12078
-Ref: b12078
-Ref: index pycommand CommandBase error12168
-Ref: c12168
-Ref: index pycommand CommandBase flags12267
-Ref: d12267
-Ref: index pycommand CommandBase optionList12372
-Ref: e12372
-Ref: index pycommand CommandBase parentFlags13148
-Ref: f13148
-Ref: index pycommand CommandBase registerParentFlag13256
-Ref: 1013256
-Ref: index pycommand CommandBase usage13503
-Ref: 1113503
-Ref: index pycommand CommandBase usageTextExtra13727
-Ref: 1213727
-Ref: index pycommand CommandBase usagestr13821
-Ref: 1313821
-Ref: index pycommand OptionError13915
-Ref: 1413915
-Ref: index pycommand dictobject13998
-Ref: 1513998
-Ref: index pycommand run_and_exit14092
-Ref: 1614092
-Node: Why was it created?14217
-Ref: index why-was-it-created14327
-Ref: 1714327
-Node: Change Log14926
-Ref: index change-log15032
-Ref: 1815032
-Ref: Change Log-Footnote-115280
-Node: 0 3 0 - 2015-06-0415307
-Ref: index id115402
-Ref: 1915402
-Node: Added15483
-Ref: index added15562
-Ref: 1a15562
-Node: Changed15872
-Ref: index changed15951
-Ref: 1b15951
-Node: 0 2 0 - 2015-05-2116150
-Ref: index id216272
-Ref: 1c16272
-Node: Added<2>16373
-Ref: index id316458
-Ref: 1d16458
-Node: Changed<2>16722
-Ref: index id416807
-Ref: 1e16807
-Ref: Changed<2>-Footnote-116968
-Node: 0 1 0 - 2013-08-0817060
-Ref: index id517155
-Ref: 1f17155
-Ref: index id617155
-Ref: 2017155
-Node: Added<3>17232
-Ref: index id717298
-Ref: 2117298
-Node: Software license17345
-Ref: index software-license17451
-Ref: 2217451
-Node: Python Module Index18249
-Node: Index18418
+Node: Download and install1745
+Ref: index download-and-install1856
+Ref: 21856
+Ref: index pycommand-0-3-01856
+Ref: 31856
+Node: Quick setup from a template2148
+Ref: index quick-setup-from-a-template2284
+Ref: 42284
+Node: Example #1 - A Basic command2687
+Ref: index example-1-a-basic-command2869
+Ref: 52869
+Node: Example #2 - Full example of one main command with two subcommands6656
+Ref: index example-2-full-example-of-one-main-command-with-two-subcommands6831
+Ref: 66831
+Node: Module documentation11361
+Ref: index module-pycommand11527
+Ref: 011527
+Ref: index module-documentation11527
+Ref: 711527
+Ref: index pycommand CommandBase11644
+Ref: 811644
+Ref: index pycommand CommandBase args11788
+Ref: 911788
+Ref: index pycommand CommandBase commands11867
+Ref: a11867
+Ref: index pycommand CommandBase description11967
+Ref: b11967
+Ref: index pycommand CommandBase error12057
+Ref: c12057
+Ref: index pycommand CommandBase flags12156
+Ref: d12156
+Ref: index pycommand CommandBase optionList12261
+Ref: e12261
+Ref: index pycommand CommandBase parentFlags13037
+Ref: f13037
+Ref: index pycommand CommandBase registerParentFlag13145
+Ref: 1013145
+Ref: index pycommand CommandBase usage13392
+Ref: 1113392
+Ref: index pycommand CommandBase usageTextExtra13616
+Ref: 1213616
+Ref: index pycommand CommandBase usagestr13710
+Ref: 1313710
+Ref: index pycommand OptionError13804
+Ref: 1413804
+Ref: index pycommand dictobject13887
+Ref: 1513887
+Ref: index pycommand run_and_exit13981
+Ref: 1613981
+Node: Why was it created?14106
+Ref: index why-was-it-created14216
+Ref: 1714216
+Node: Change Log14815
+Ref: index change-log14921
+Ref: 1814921
+Ref: Change Log-Footnote-115169
+Node: 0 3 0 - 2015-06-0415196
+Ref: index id115291
+Ref: 1915291
+Node: Added15372
+Ref: index added15451
+Ref: 1a15451
+Node: Changed15761
+Ref: index changed15840
+Ref: 1b15840
+Node: 0 2 0 - 2015-05-2116039
+Ref: index id216161
+Ref: 1c16161
+Node: Added<2>16262
+Ref: index id316347
+Ref: 1d16347
+Node: Changed<2>16611
+Ref: index id416696
+Ref: 1e16696
+Ref: Changed<2>-Footnote-116857
+Node: 0 1 0 - 2013-08-0816949
+Ref: index id617044
+Ref: 1f17044
+Ref: index id517044
+Ref: 2017044
+Node: Added<3>17121
+Ref: index id717187
+Ref: 2117187
+Node: Software license17234
+Ref: index software-license17340
+Ref: 2217340
+Node: Python Module Index18138
+Node: Index18307
 
 End Tag Table
 
