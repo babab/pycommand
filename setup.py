@@ -6,7 +6,7 @@ setup(
     version=pycommand.__version__,
     description=pycommand.__doc__,
     author=pycommand.__author__,
-    author_email='benjamin@babab.nl',
+    author_email='benjamin@althu.es',
     url='https://github.com/babab/pycommand',
     download_url='http://pypi.python.org/pypi/pycommand/',
     py_modules=['pycommand'],
