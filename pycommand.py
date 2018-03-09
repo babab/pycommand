@@ -342,6 +342,172 @@ class $classname(pycommand.CommandBase):
 if __name__ == '__main__':
     pycommand.run_and_exit($classname)
 """
+    templates['full-with-comments'] = r"""#!/usr/bin/env python
+
+import pycommand
+import sys
+
+
+class VersionCommand(pycommand.CommandBase):
+    usagestr = 'usage: $name version'
+    description = 'Show version information'
+
+    def run(self):
+        print('Python version ' + sys.version.split()[0])
+        print('Fileflag = {0}'.format(self.parentFlags['file']))
+
+
+class HelpCommand(pycommand.CommandBase):
+    usagestr = 'usage: $name help [<command>]'
+    description = 'Show help information'
+
+    def run(self):
+        if self.args:
+            if self.args[0] == 'help':
+                print(self.usage)
+                print('Fileflag = {0}'.format(self.parentFlags['file']))
+            elif self.args[0] == 'version':
+                print(VersionCommand([]).usage)
+        else:
+            print($classname([]).usage)
+
+
+class $classname(pycommand.CommandBase):
+    '''An full example of a pycommand CLI program
+
+    This is an example that demonstrates the mapping of subcommands
+    and registrering the --file flag from the main command to its
+    subcommands. It only explains new concepts that are not handled in
+    ``basic-example``, so be sure to see that first.
+
+    '''
+    usagestr = 'usage: $name [-f <filename>] <command> [<args>]'
+    description = (
+        'Commands:\n'
+        '   help         show this help information\n'
+        '   version      show full version information'
+    )
+
+    # Mapping of subcommands
+    commands = {'help': HelpCommand,
+                'version': VersionCommand}
+
+    optionList = (('file', ('f', '<filename>', 'use specified file')), )
+
+    # Optional extra usage information
+    usageTextExtra = (
+        "See '$name help <command>' for more information on a "
+        "specific command."
+    )
+
+    def run(self):
+        '''The `run` method of the main command
+
+        After the object has been created, there are 4 instance
+        variables ready for you to use to write the flow of the program.
+        In this example we use them all::
+
+            error -- Thrown by GetoptError when parsing illegal
+                     arguments
+
+            flags -- Object/dict of parsed options and corresponding
+                     arguments, if any.
+
+            usage -- String with usage information. The string
+                     is compiled using the values found for `usagestr`,
+                     `description`, `optionList` and `usageTextExtra`.
+
+            parentFlags -- Dict of registered `flags` of another
+                           `CommandBase` object.
+
+        '''
+        try:
+            cmd = super($classname, self).run()
+        except pycommand.CommandExit as e:
+            return e.err
+
+        # Register a flag of a parent command
+        # :Parameters:
+        #     - `optionName`: String. Name of option
+        #     - `value`: Mixed. Value of parsed flag`
+        cmd.registerParentFlag('file', self.flags.file)
+
+        if cmd.error:
+            print('$name {cmd}: {error}'
+                  .format(cmd=self.args[0], error=cmd.error))
+            return 1
+        else:
+            return cmd.run()
+
+
+if __name__ == '__main__':
+    # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+    pycommand.run_and_exit($classname)
+"""
+    templates['full-no-comments'] = r"""#!/usr/bin/env python
+
+import pycommand
+import sys
+
+
+class VersionCommand(pycommand.CommandBase):
+    usagestr = 'usage: $name version'
+    description = 'Show version information'
+
+    def run(self):
+        print('Python version ' + sys.version.split()[0])
+        print('Fileflag = {0}'.format(self.parentFlags['file']))
+
+
+class HelpCommand(pycommand.CommandBase):
+    usagestr = 'usage: $name help [<command>]'
+    description = 'Show help information'
+
+    def run(self):
+        if self.args:
+            if self.args[0] == 'help':
+                print(self.usage)
+                print('Fileflag = {0}'.format(self.parentFlags['file']))
+            elif self.args[0] == 'version':
+                print(VersionCommand([]).usage)
+        else:
+            print($classname([]).usage)
+
+
+class $classname(pycommand.CommandBase):
+    usagestr = 'usage: $name [-f <filename>] <command> [<args>]'
+    description = (
+        'Commands:\n'
+        '   help         show this help information\n'
+        '   version      show full version information'
+    )
+
+    commands = {'help': HelpCommand,
+                'version': VersionCommand}
+    optionList = (('file', ('f', '<filename>', 'use specified file')), )
+    usageTextExtra = (
+        "See '$name help <command>' for more information on a "
+        "specific command."
+    )
+
+    def run(self):
+        try:
+            cmd = super($classname, self).run()
+        except pycommand.CommandExit as e:
+            return e.err
+
+        cmd.registerParentFlag('file', self.flags.file)
+        if cmd.error:
+            print('$name {cmd}: {error}'
+                  .format(cmd=self.args[0], error=cmd.error))
+            return 1
+        else:
+            return cmd.run()
+
+
+if __name__ == '__main__':
+    pycommand.run_and_exit($classname)
+"""
 
     class PycommandGenerator(CommandBase):
         '''Generate a shell command from a template'''
@@ -366,9 +532,9 @@ if __name__ == '__main__':
                 return 0
             elif self.flags['generate']:
                 print('pycommand v{} - script generator'.format(__version__))
+                self.askTemplate()
                 self.askVar('name', 'name of executable')
                 self.askVar('classname', 'name of class')
-                self.askTemplate()
                 return 0 if self.save() else 1
             else:
                 print(self.usage)
@@ -380,12 +546,24 @@ if __name__ == '__main__':
 
         def askTemplate(self):
             inp = 0
-            while inp not in range(1, 3):
+            while inp not in range(1, 5):
+                print('''
+Basic template:
+  * supports --options and argument parsing
+  * suitable for most use cases
+
+Full template (uses objects for its subcommands):
+  * subcommands can have their own --options and subcommands parsing
+  * subcommands can have subcommands that can have subcommands
+  * access values for --some-option from a parent command in its child command.
+''')
                 print('select a template:')
                 print(' 1 - basic')
                 print(' 2 - basic (without explaining comments)')
+                print(' 3 - full with subcommand objects')
+                print(' 4 - full with subcommand objects (without comments)')
                 try:
-                    inp = int(input('Enter a number [1-2]: '))
+                    inp = int(input('Enter a number [1-4]: '))
                 except ValueError:
                     inp = 0
 
@@ -396,6 +574,12 @@ if __name__ == '__main__':
                 )
             elif inp == '2':
                 self.template = string.Template(templates['basic-no-comments'])
+            elif inp == '3':
+                self.template = string.Template(
+                    templates['full-with-comments']
+                )
+            elif inp == '4':
+                self.template = string.Template(templates['full-no-comments'])
             else:
                 raise Exception('Invalid template choice')
 
