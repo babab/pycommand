@@ -19,7 +19,6 @@ setup(
         ('share/pycommand/examples', ['examples/basic-example',
                                       'examples/full-example']),
         ('share/pycommand', ['LICENSE', 'README.rst']),
-        ('share/man/man3', ['pycommand.3']),
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
