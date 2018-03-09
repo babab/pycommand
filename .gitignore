@@ -4,6 +4,7 @@ doc/_build
 MANIFEST
 *.pyc
 __pycache__
+index.html
 
 /.virtualenv/
 /pycommand.egg-info/
