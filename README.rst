@@ -8,15 +8,6 @@ pycommand 0.3.0
 .. image:: https://gemnasium.com/babab/pycommand.svg
    :target: https://gemnasium.com/babab/pycommand
 
-.. image:: https://img.shields.io/pypi/v/pycommand.svg
-   :target: https://pypi.python.org/pypi/pycommand/
-
-.. image:: https://img.shields.io/pypi/dm/pycommand.svg
-   :target: https://pypi.python.org/pypi/pycommand/
-
-.. image:: https://img.shields.io/pypi/l/pycommand.svg
-   :target: https://pypi.python.org/pypi/pycommand/
-
 .. image:: https://badge.waffle.io/babab/pycommand.png?label=ready&title=Ready
    :target: https://waffle.io/babab/pycommand
    :alt: Stories in Ready

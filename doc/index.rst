@@ -5,6 +5,9 @@ pycommand 0.3.0
     :target: https://travis-ci.org/babab/pycommand
     :alt: Build Status
 
+.. image:: https://gemnasium.com/babab/pycommand.svg
+   :target: https://gemnasium.com/babab/pycommand
+
 .. toctree::
    :maxdepth: 2
 
