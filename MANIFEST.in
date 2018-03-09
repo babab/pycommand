@@ -1,6 +1,4 @@
 include LICENSE
-include pycommand.3
-include pycommand.info
 include README.rst
 include CHANGELOG.rst
 include tests.py
