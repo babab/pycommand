@@ -157,7 +157,7 @@ have this in other projects I've decided to put it in the cheeseshop.
 Software license
 ================
 
-Copyright (c) 2013-2016  Benjamin Althues <benjamin@althu.es>
+Copyright (c) 2013-2016, 2018 Benjamin Althues <benjamin@babab.nl>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
