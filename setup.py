@@ -6,7 +6,7 @@ setup(
     version=pycommand.__version__,
     description=pycommand.__doc__,
     author=pycommand.__author__,
-    author_email='benjamin@althu.es',
+    author_email='benjamin@babab.nl',
     url='https://github.com/babab/pycommand',
     download_url='http://pypi.python.org/pypi/pycommand/',
     py_modules=['pycommand'],
@@ -14,7 +14,6 @@ setup(
     long_description='{}\n{}'.format(open('README.rst').read(),
                                      open('CHANGELOG.rst').read()),
     platforms='any',
-    scripts=['scripts/pycommand'],
     data_files=[
         ('share/pycommand/examples', ['examples/basic-example',
                                       'examples/full-example']),

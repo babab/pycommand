@@ -45,19 +45,22 @@ To work with the current development version, do something like this:
    # pip install -e .
 
 
-Quick setup from a template
-===========================
+Script generator
+================
 
 To quicly start writing a command from a template (much like the
-examples below), use pycommand's helper script by running:
+examples below), use the script generator by running:
 
 .. code-block:: console
 
-   $ pycommand init
+   $ python -m pycommand --generate
 
 This will ask you for an executable name, class name and template type
-and it will save it to an executable file, ready to be used as a Python
-shell script (for your Python package/module)).
+and it will save it to an executable python script, ready to be used as
+a command line program.
+
+You can have a very basic command line program that handles ``-v,
+--version`` and ``-h, --help`` arguments set up in less than a minute.
 
 
 Example #1 - A Basic command

@@ -218,3 +218,214 @@ def run_and_exit(command_class):
         sys.exit(1)
     else:
         sys.exit(cmd.run())
+
+
+if __name__ == '__main__':
+    # What follows is the pycommand generator script, with embedded templates.
+    # This can be run by executing the module directly (python -m pycommand)
+    import os
+    import stat
+    import string
+
+    try:
+        input = raw_input
+    except NameError:
+        pass
+
+    templates = {}
+    templates['basic-with-comments'] = """#!/usr/bin/env python
+
+import pycommand
+
+
+class $classname(pycommand.CommandBase):
+    '''description of the program, used below as __doc__'''
+    usagestr = 'usage: $name [options]'
+    description = __doc__
+
+    # optionList is a tuple of 2-tuples, in format:
+    # (long-option, (short-option, argument, help-information))
+    #
+    # The order in which you define the options will be the order
+    # in which they will appear in the usage message
+    optionList = (
+        ('help', ('h', False, 'show this help information')),
+
+        # To specify that an option requires an argument just add a
+        # string that describes it
+
+        # ('file', ('f', '<filename>', 'use specified file')),
+
+        # Use an empty string to ommit short option. Long option names
+        # cannot be ommitted, since they are used as dictionary keys in
+        # `self.flags` which holds the validated input
+
+        # ('version', ('', False, 'show version information')),
+    )
+
+    def run(self):
+        '''The `run` method of the $name command
+
+        You need to define a method in $classname that actually deals
+        with any options that the user of your program has set. We call
+        it `run` here, but you can name it whatever you want.
+
+        After the object has been created, there are 4 instance
+        variables ready for you to use to write the flow of the program.
+        In this example we only use the following three::
+
+            error -- Thrown by GetoptError when parsing illegal
+                     arguments
+
+            flags -- Object/dict of parsed options and corresponding
+                     arguments, if any.
+
+            usage -- String with usage information. The string
+                     is compiled using the values found for `usagestr`,
+                     `description`, `optionList` and `usageTextExtra`.
+
+        '''
+        if self.flags.help:
+            print(self.usage)
+            return 0
+        # elif self.flags.version:
+        #     print('Python version ' + sys.version.split()[0])
+        #     return 0
+        # elif self.flags.file:
+        #     print('filename = ' + self.flags.file)
+        #     return 0
+
+        print('Program completed. Try adding "--help"')
+
+if __name__ == '__main__':
+    # Shortcut for reading from sys.argv[1:] and sys.exit(status)
+    pycommand.run_and_exit($classname)
+
+    # The shortcut is equivalent to the following:
+
+    # cmd = $classname(sys.argv[1:])
+    # if cmd.error:
+    #     print('error: {0}'.format(cmd.error))
+    #     sys.exit(1)
+    # else:
+    #     sys.exit(cmd.run())
+"""
+
+    templates['basic-no-comments'] = """#!/usr/bin/env python
+
+import pycommand
+
+
+class $classname(pycommand.CommandBase):
+    '''description of the program, used below as __doc__'''
+    usagestr = 'usage: $name [options]'
+    description = __doc__
+    optionList = (
+        ('help', ('h', False, 'show this help information')),
+        # ('file', ('f', '<filename>', 'use specified file')),
+        # ('version', ('', False, 'show version information')),
+    )
+
+    def run(self):
+        if self.flags.help:
+            print(self.usage)
+            return 0
+        # elif self.flags.version:
+        #     print('Python version ' + sys.version.split()[0])
+        #     return 0
+        # elif self.flags.file:
+        #     print('filename = ' + self.flags.file)
+        #     return 0
+
+        print('Program completed. Try adding "--help"')
+
+if __name__ == '__main__':
+    pycommand.run_and_exit($classname)
+"""
+
+    class PycommandGenerator(CommandBase):
+        '''Generate a shell command from a template'''
+
+        usagestr = 'usage: python -m pycommand [options]'
+        description = __doc__
+        optionList = (
+            ('generate', ('g', False, 'generate a shell command')),
+            ('help', ('h', False, 'show this help information')),
+            ('version', ('v', False, 'show version information')),
+        )
+
+        variables = {
+            'name': 'mycommand',
+            'classname': 'Command',
+        }
+        template = ''
+
+        def run(self):
+            if self.flags['version']:
+                print('pycommand version ' + __version__)
+                return 0
+            elif self.flags['generate']:
+                print('pycommand v{} - script generator'.format(__version__))
+                self.askVar('name', 'name of executable')
+                self.askVar('classname', 'name of class')
+                self.askTemplate()
+                return 0 if self.save() else 1
+            else:
+                print(self.usage)
+                return 0
+
+        def askVar(self, varName, question):
+            inp = input(question + ' [{}]: '.format(self.variables[varName]))
+            self.variables[varName] = inp if inp else self.variables[varName]
+
+        def askTemplate(self):
+            inp = 0
+            while inp not in range(1, 3):
+                print('select a template:')
+                print(' 1 - basic')
+                print(' 2 - basic (without explaining comments)')
+                try:
+                    inp = int(input('Enter a number [1-2]: '))
+                except ValueError:
+                    inp = 0
+
+            inp = str(inp)
+            if inp == '1':
+                self.template = string.Template(
+                    templates['basic-with-comments']
+                )
+            elif inp == '2':
+                self.template = string.Template(templates['basic-no-comments'])
+            else:
+                raise Exception('Invalid template choice')
+
+        def save(self):
+            basepath = os.path.abspath(os.path.curdir)
+            dumpfile = basepath + '/' + self.variables['name']
+
+            if os.path.isfile(dumpfile):
+                print('File "' + dumpfile + '" already exists.')
+                print('Using "/tmp/' + self.variables['name'] + '"')
+                dumpfile = '/tmp/' + self.variables['name']
+
+            try:
+                with open(dumpfile, 'w') as dump:
+                    dump.write(self.template.substitute(self.variables))
+            except OSError:
+                print('Error writing to file "' + dumpfile + '"')
+                return False
+
+            os.chmod(
+                dumpfile,
+                os.stat(dumpfile).st_mode |
+                stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+            )
+            print('Written to "' + dumpfile + '"')
+            print('Try running it with "' + dumpfile + ' --help"')
+            return True
+
+    # Run pycommand generator
+    try:
+        run_and_exit(PycommandGenerator)
+    except KeyboardInterrupt:
+        print('')
