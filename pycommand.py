@@ -20,7 +20,7 @@ import sys
 
 __docformat__ = 'restructuredtext'
 __author__ = "Benjamin Althues"
-__copyright__ = "Copyright (C) 2013-2016  Benjamin Althues"
+__copyright__ = "Copyright (C) 2013-2016, 2018  Benjamin Althues"
 __version_info__ = (0, 3, 0, 'beta', 0)
 __version__ = '0.3.0'
 
