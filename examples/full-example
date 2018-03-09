@@ -21,6 +21,7 @@ class HelpCommand(pycommand.CommandBase):
         if self.args:
             if self.args[0] == 'help':
                 print(self.usage)
+                print('Fileflag = {0}'.format(self.parentFlags['file']))
             elif self.args[0] == 'version':
                 print(VersionCommand([]).usage)
         else:
@@ -32,7 +33,7 @@ class FullExampleCommand(pycommand.CommandBase):
 
     This is an example that demonstrates the mapping of subcommands
     and registrering the --file flag from the main command to its
-    subcommand. It only explains new concepts that are not handled in
+    subcommands. It only explains new concepts that are not handled in
     ``basic-example``, so be sure to see that first.
 
     '''
