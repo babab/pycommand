@@ -18,9 +18,13 @@ class HelpCommand(pycommand.CommandBase):
     description = 'Show help information'
 
     def run(self):
-        if self.args and self.args[0] == 'version':
-            print(VersionCommand([]).usage)
-        print(cmd.usage)
+        if self.args:
+            if self.args[0] == 'help':
+                print(self.usage)
+            elif self.args[0] == 'version':
+                print(VersionCommand([]).usage)
+        else:
+            print(FullExampleCommand([]).usage)
 
 
 class FullExampleCommand(pycommand.CommandBase):
