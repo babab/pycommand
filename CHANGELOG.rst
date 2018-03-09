@@ -3,6 +3,39 @@ Change Log
 
 pycommand adheres to `Semantic Versioning <http://semver.org/>`_.
 
+Git version (next release)
+----------------------------
+
+.. note::
+
+   The ``pycommand init`` script is removed and is embedded in the
+   pycommand module itself.
+
+   To auto generate scripts from templates from now on, use:
+
+      python -m pycommand -g
+
+
+Added
+#####
+- Full templates can now (also) be auto generated
+- CI testing for Python 3.5 and 3.6
+
+Changed
+#######
+- Code generator is embedded in the pycommand module itself instead of
+  using an installed script (``pycommand init``)
+- All templates are now embedded as well
+
+Removed
+#######
+- Pycommand init script (installed into /usr/local/bin)
+- Templates directory
+- GNU info docs and manpage from distribution (they can still be generated)
+
+  * pycommand.3 (installed into /share/man/man3
+  * pycommand.info
+
 
 0.3.0 - 2015-06-04
 ------------------
