@@ -11,49 +11,56 @@ pycommand 0.3.0
 .. toctree::
    :maxdepth: 2
 
-**A clean and simplistic alternative for argparse, optparse and getopt**
+
+**High level Python library/toolkit for creating command line programs
+and shell scripts with minimal effort.**
 
 Pycommand is essentially a fancy wrapper around getopt that consists of
-one simple `CommandBase` class that you can use to create executable
-commands for your python programs with very simplistic and readable
+one simple `CommandBase` class that you can inherit to create executable
+commands for your (Python) programs with very simplistic and readable
 code. It has support for subcommands and also nesting commands, so you
 can create (multiple levels of) subcommands, with the ability to pass
 the values of optional arguments of a command object to its subcommand
 objects. Supported Python versions are 2.7 and 3.2 and later.
 
+- Documentation: http://pythonhosted.org/pycommand/
+- PyPI: https://pypi.python.org/pypi/pycommand/
 - Github: https://github.com/babab/pycommand
 - Bitbucket: https://bitbucket.org/babab/pycommand
-- PyPI: https://pypi.python.org/pypi/pycommand/
-- Documentation: http://pythonhosted.org/pycommand/
+
+
+Features
+========
+
+- Parsing of optional and positional arguments
+- Graceful automatic handling of exit status codes
+- Subcommands can have their own --options and subcommands parsing
+- Subcommands can have subcommands that can have subcommands
+- Access values for --some-option from a parent command in its child command.
+- Auto compiled usage messages
+- Minimalistic approach with a clean API
+- Create scripts in a matter of minutes using the code generator
 
 
 Download and install
 ====================
 
-If you have pip installed, you can just:
+If you have pip installed, you can just do:
 
 .. code-block:: console
 
    # pip install pycommand
 
-To work with the current development version, do something like this:
-
-.. code-block:: console
-
-   $ git clone git://bitbucket.org/babab/pycommand.git
-   # cd pycommand
-   # pip install -e .
-
 
 Script generator
 ================
 
-To quicly start writing a command from a template (much like the
+To quickly start writing a command from a template (much like the
 examples below), use the script generator by running:
 
 .. code-block:: console
 
-   $ python -m pycommand --generate
+   $ python -m pycommand -g
 
 This will ask you for an executable name, class name and template type
 and it will save it to an executable python script, ready to be used as
