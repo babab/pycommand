@@ -516,6 +516,7 @@ if __name__ == '__main__':
         description = __doc__
         optionList = (
             ('generate', ('g', False, 'generate a shell command')),
+            ('template', ('t', '<number>', 'use template number')),
             ('help', ('h', False, 'show this help information')),
             ('version', ('v', False, 'show version information')),
         )
@@ -532,13 +533,37 @@ if __name__ == '__main__':
                 return 0
             elif self.flags['generate']:
                 print('pycommand v{} - script generator'.format(__version__))
-                self.askTemplate()
+                if self.flags.template:
+                    if int(self.flags.template) not in range(1, 5):
+                        print('error: template "{}" does not exist'
+                              .format(self.flags.template))
+                        return 1
+                    self.setTemplate(self.flags.template)
+                else:
+                    self.setTemplate(self.askTemplate())
                 self.askVar('name', 'name of executable')
                 self.askVar('classname', 'name of class')
                 return 0 if self.save() else 1
             else:
                 print(self.usage)
                 return 0
+
+        def setTemplate(self, template_n):
+            template_n = str(template_n)
+            if template_n == '1':
+                self.template = string.Template(
+                    templates['basic-with-comments']
+                )
+            elif template_n == '2':
+                self.template = string.Template(templates['basic-no-comments'])
+            elif template_n == '3':
+                self.template = string.Template(
+                    templates['full-with-comments']
+                )
+            elif template_n == '4':
+                self.template = string.Template(templates['full-no-comments'])
+            else:
+                raise Exception('Invalid template choice')
 
         def askVar(self, varName, question):
             inp = input(question + ' [{}]: '.format(self.variables[varName]))
@@ -566,22 +591,7 @@ Full template (uses objects for its subcommands):
                     inp = int(input('Enter a number [1-4]: '))
                 except ValueError:
                     inp = 0
-
-            inp = str(inp)
-            if inp == '1':
-                self.template = string.Template(
-                    templates['basic-with-comments']
-                )
-            elif inp == '2':
-                self.template = string.Template(templates['basic-no-comments'])
-            elif inp == '3':
-                self.template = string.Template(
-                    templates['full-with-comments']
-                )
-            elif inp == '4':
-                self.template = string.Template(templates['full-no-comments'])
-            else:
-                raise Exception('Invalid template choice')
+            return inp
 
         def save(self):
             basepath = os.path.abspath(os.path.curdir)
