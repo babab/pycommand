@@ -221,8 +221,9 @@ def run_and_exit(command_class):
 
 
 if __name__ == '__main__':
-    # What follows is the pycommand generator script, with embedded templates.
-    # This can be run by executing the module directly (python -m pycommand)
+    # What follows is the pycommand shell command and generator script,
+    # with embedded templates. This can be run by executing the module
+    # directly (python -m pycommand)
     import os
     import stat
     import string
@@ -512,13 +513,11 @@ if __name__ == '__main__':
     class PycommandGenerator(CommandBase):
         '''Generate a shell command from a template'''
 
-        usagestr = 'usage: python -m pycommand [options]'
+        usagestr = 'usage: python -m pycommand init [options]'
         description = __doc__
         optionList = (
-            ('generate', ('g', False, 'generate a shell command')),
             ('template', ('t', '<number>', 'use template number')),
             ('help', ('h', False, 'show this help information')),
-            ('version', ('v', False, 'show version information')),
         )
 
         variables = {
@@ -528,25 +527,22 @@ if __name__ == '__main__':
         template = ''
 
         def run(self):
-            if self.flags['version']:
-                print('pycommand version ' + __version__)
-                return 0
-            elif self.flags['generate']:
-                print('pycommand v{} - script generator'.format(__version__))
-                if self.flags.template:
-                    if int(self.flags.template) not in range(1, 5):
-                        print('error: template "{}" does not exist'
-                              .format(self.flags.template))
-                        return 1
-                    self.setTemplate(self.flags.template)
-                else:
-                    self.setTemplate(self.askTemplate())
-                self.askVar('name', 'name of executable')
-                self.askVar('classname', 'name of class')
-                return 0 if self.save() else 1
-            else:
+            if self.flags.help:
                 print(self.usage)
                 return 0
+
+            print('pycommand v{} - script generator'.format(__version__))
+            if self.flags.template:
+                if int(self.flags.template) not in range(1, 5):
+                    print('error: template "{}" does not exist'
+                          .format(self.flags.template))
+                    return 1
+                self.setTemplate(self.flags.template)
+            else:
+                self.setTemplate(self.askTemplate())
+            self.askVar('name', 'name of executable')
+            self.askVar('classname', 'name of class')
+            return 0 if self.save() else 1
 
         def setTemplate(self, template_n):
             template_n = str(template_n)
@@ -618,8 +614,44 @@ Full template (uses objects for its subcommands):
             print('Try running it with "' + dumpfile + ' --help"')
             return True
 
-    # Run pycommand generator
+    class PycommandShellMain(CommandBase):
+        usagestr = 'usage: python -m pycommand [options] <command>'
+        description = (
+            'Commands:\n  init - Generate a shell command from a template'
+        )
+
+        commands = {'init': PycommandGenerator}
+        optionList = (
+            ('help', ('h', False, 'show this help information')),
+            ('version', ('v', False, 'show version information')),
+        )
+        usageTextExtra = (
+            "See 'python -m pycommand init --help' for more information"
+        )
+
+        def run(self):
+            # Handle --version and --help
+            if self.flags.version:
+                print('pycommand version ' + __version__)
+                return 0
+            elif self.flags.help:
+                print(self.usage)
+                return 0
+            # Handle subcommands
+            try:
+                cmd = super(PycommandShellMain, self).run()
+            except CommandExit as e:
+                return e.err
+            # Handle errors
+            if cmd.error:
+                print('python -m pycommand {cmd}: {error}'
+                      .format(cmd=self.args[0], error=cmd.error))
+                return 1
+            else:
+                return cmd.run()
+
+    # Run PycommandShellMain, prevent showing a traceback on interrupt
     try:
-        run_and_exit(PycommandGenerator)
+        run_and_exit(PycommandShellMain)
     except KeyboardInterrupt:
         print('')
