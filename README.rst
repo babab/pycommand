@@ -12,8 +12,7 @@ pycommand 0.3.0
    :target: https://waffle.io/babab/pycommand
    :alt: Stories in Ready
 
-**High level Python library/toolkit for creating command line programs
-and shell scripts with minimal effort.**
+**Library / toolkit for creating command line programs with minimal effort.**
 
 Pycommand is essentially a fancy wrapper around getopt that consists of
 one simple `CommandBase` class that you can inherit to create executable
@@ -25,6 +24,7 @@ objects. Supported Python versions are 2.7 and 3.2 and later.
 
 - Documentation: http://pythonhosted.org/pycommand/
 - PyPI: https://pypi.python.org/pypi/pycommand/
+
 - Github: https://github.com/babab/pycommand
 - Bitbucket: https://bitbucket.org/babab/pycommand
 
@@ -33,13 +33,13 @@ Features
 ========
 
 - Parsing of optional and positional arguments
-- Graceful automatic handling of exit status codes
-- Subcommands can have their own --options and subcommands parsing
-- Subcommands can have subcommands that can have subcommands
-- Access values for --some-option from a parent command in its child command.
-- Auto compiled usage messages
 - Minimalistic approach with a clean API
 - Create scripts in a matter of minutes using the code generator
+- Auto compiled usage messages
+- Graceful semi-automatic handling of exit status codes
+- Subcommands can have subcommands that can have subcommands
+  (each with their own optional arguments)
+- Pass values for --some-option from a parent command into child commands.
 
 
 Download and install
@@ -60,7 +60,7 @@ examples below), use the script generator by running:
 
 .. code-block:: console
 
-   $ python -m pycommand -g
+   $ python -m pycommand init
 
 This will ask you for an executable name, class name and template type
 and it will save it to an executable python script, ready to be used as
@@ -151,7 +151,9 @@ and the output it gives, which is the main reason I've always used
 The `CommandBase` class was originally written for *DisPass*,
 which is a password manager/generator, as a means to easily define new
 subcommands and have auto-generated usage messages. Because I want to
-have this in other projects I've decided to put it in the cheeseshop.
+have this in other projects I've decided to put it in the cheeseshop in 2013.
+It has since been refined for more generic usage and has proven to be
+stable and workable throughout the years.
 
 
 Software license

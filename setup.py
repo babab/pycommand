@@ -9,7 +9,7 @@ setup(
     author_email='benjamin@babab.nl',
     url='https://github.com/babab/pycommand',
     download_url='http://pypi.python.org/pypi/pycommand/',
-    py_modules=['pycommand'],
+    packages=['pycommand'],
     license='ISC',
     long_description='{}\n{}'.format(open('README.rst').read(),
                                      open('CHANGELOG.rst').read()),
