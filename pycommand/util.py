@@ -17,9 +17,7 @@ from __future__ import absolute_import
 '''
 pycommand shell command and generator script.
 
-This can be run by executing the module directly with ``python -m
-pycommand.util`` but it is advised to only use the main package name
-``python -m pycommand``, so the __main__ module will handle it.
+This can be run by executing the __main__ module (python -m pycommand).
 '''
 
 import os
@@ -157,7 +155,7 @@ class PycommandShellMain(CommandBase):
         ('version', ('v', False, 'show version information')),
     )
     usageTextExtra = (
-        "See 'python -m pycommand.util --help' for more information"
+        "See 'python -m pycommand --help' for more information"
     )
 
     def run(self):
@@ -180,11 +178,3 @@ class PycommandShellMain(CommandBase):
             return 1
         else:
             return cmd.run()
-
-
-if __name__ == '__main__':
-    # Run PycommandShellMain, prevent showing a traceback on interrupt
-    try:
-        run_and_exit(PycommandShellMain)
-    except KeyboardInterrupt:
-        print('')
