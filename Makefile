@@ -12,12 +12,11 @@ dev: uninstall
 	rm -rf dist
 	sudo pip install -e .
 
-install: uninstall
-	python setup.py bdist_wheel
+install: uninstall distrib
 	sudo pip install dist/pycommand-0.3.0-py2.py3-none-any.whl
 	rm -rf __pycache__ build pycommand.egg-info
 distrib:
-	true
+	python setup.py sdist bdist_wheel
 readme:
 	cat README.rst > index.rst
 	echo >> index.rst
