@@ -33,16 +33,19 @@ class BasicTestCommand(pycommand.CommandBase):
 
 
 def test_args_empty():
+    '''Flags should be None by default'''
     cmd = BasicTestCommand([])
     eq_(cmd.flags['help'], None)
 
 
 def test_no_error():
+    '''cmd.error should be None by default'''
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.error, None)
 
 
 def test_flags_short_without_argument():
+    '''When a flag is given, it's value should be True, else None'''
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags['help'], True)
 
@@ -51,6 +54,7 @@ def test_flags_short_without_argument():
 
 
 def test_flags_short_with_argument():
+    '''If flags take arguments that should become the value, else None'''
     cmd = BasicTestCommand(['-f', 'funny-cats.gif'])
     eq_(cmd.flags['file'], 'funny-cats.gif')
 
@@ -59,6 +63,7 @@ def test_flags_short_with_argument():
 
 
 def test_flags_mixed1():
+    '''Test True/None status of defined flags with 1 argument'''
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags['help'], True)
     eq_(cmd.flags['file'], None)
@@ -66,6 +71,7 @@ def test_flags_mixed1():
 
 
 def test_flags_mixed2():
+    '''Test True/None status of defined flags with 2 arguments'''
     cmd = BasicTestCommand(['-h', '--version'])
     eq_(cmd.flags['help'], True)
     eq_(cmd.flags['file'], None)
@@ -73,6 +79,7 @@ def test_flags_mixed2():
 
 
 def test_flags_mixed3():
+    '''Test True/None status of defined flags with 3 arguments'''
     cmd = BasicTestCommand(['-h', '--version', '--file', 'happy-puppies.gif'])
     eq_(cmd.flags['help'], True)
     eq_(cmd.flags['file'], 'happy-puppies.gif')
@@ -80,6 +87,7 @@ def test_flags_mixed3():
 
 
 def test_flags_attributes():
+    '''Flags should be accessible by attribute'''
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags.help, True)
     eq_(cmd.flags.file, None)
@@ -88,5 +96,6 @@ def test_flags_attributes():
 
 @raises(pycommand.OptionError)
 def test_flags_attribute_not_existing():
+    '''Accessing unset attributes raises an OptionError'''
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags.tsixetonseod, None)
