@@ -1,17 +1,6 @@
 pycommand 0.4.0
 ******************************************************************************
 
-.. image:: https://travis-ci.org/babab/pycommand.svg?branch=master
-    :target: https://travis-ci.org/babab/pycommand
-    :alt: Build Status
-
-.. image:: https://gemnasium.com/babab/pycommand.svg
-   :target: https://gemnasium.com/babab/pycommand
-
-.. image:: https://badge.waffle.io/babab/pycommand.png?label=ready&title=Ready
-   :target: https://waffle.io/babab/pycommand
-   :alt: Stories in Ready
-
 **Library / toolkit for creating command line programs with minimal effort.**
 
 Pycommand is essentially a fancy wrapper around getopt that consists of
