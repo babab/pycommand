@@ -20,6 +20,7 @@ from nose.tools import (
 )
 
 import pycommand
+from pycommand import util
 
 
 class BasicTestCommand(pycommand.CommandBase):
@@ -99,3 +100,9 @@ def test_flags_attribute_not_existing():
     '''Accessing unset attributes raises an OptionError'''
     cmd = BasicTestCommand(['-h'])
     eq_(cmd.flags.tsixetonseod, None)
+
+
+def test_shellmain_no_args():
+    '''Util: Help message is printed when no args are given'''
+    cmd = util.PycommandShellMain([])
+    print(cmd.run())
