@@ -20,7 +20,7 @@ setup(
         ('share/pycommand', ['LICENSE', 'README.rst']),
     ],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: ISC License (ISCL)',

@@ -3,8 +3,8 @@ Change Log
 
 pycommand adheres to `Semantic Versioning <http://semver.org/>`_.
 
-Git version (next release)
---------------------------
+0.4.0 - 2018-03-27
+------------------
 
 Added
 #####
