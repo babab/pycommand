@@ -1,4 +1,4 @@
-pycommand 0.3.0
+pycommand 0.4.0
 ******************************************************************************
 
 .. image:: https://travis-ci.org/babab/pycommand.svg?branch=master

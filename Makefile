@@ -1,5 +1,7 @@
 .PHONY: help uninstall dev install distrib readme
 
+VERSION = '0.4.0'
+
 help:
 	@echo 'dev     - uninstall and create dev install (uses sudo!!)'
 	@echo 'install - uninstall and do a wheel install (uses sudo!!)'
@@ -13,7 +15,7 @@ dev: uninstall
 	sudo pip install -e .
 
 install: uninstall distrib
-	sudo pip install dist/pycommand-0.3.0-py2.py3-none-any.whl
+	sudo pip install dist/pycommand-${VERSION}-py2.py3-none-any.whl
 	rm -rf __pycache__ build pycommand.egg-info
 distrib:
 	python setup.py sdist bdist_wheel
