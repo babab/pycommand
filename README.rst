@@ -11,11 +11,9 @@ can create (multiple levels of) subcommands, with the ability to pass
 the values of optional arguments of a command object to its subcommand
 objects. Supported Python versions are 2.7 and 3.2 and later.
 
-- Documentation: http://pythonhosted.org/pycommand/
+- Documentation: https://babab.github.io/pycommand/
 - PyPI: https://pypi.python.org/pypi/pycommand/
-
 - Github: https://github.com/babab/pycommand
-- Bitbucket: https://bitbucket.org/babab/pycommand
 
 
 Features

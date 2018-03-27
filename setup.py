@@ -7,7 +7,7 @@ setup(
     description=pycommand.__doc__,
     author=pycommand.__author__,
     author_email='benjamin@babab.nl',
-    url='https://github.com/babab/pycommand',
+    url='https://babab.github.io/pycommand/',
     download_url='http://pypi.python.org/pypi/pycommand/',
     packages=['pycommand'],
     license='ISC',
