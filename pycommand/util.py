@@ -27,7 +27,6 @@ import string
 from pycommand import (
     CommandBase,
     CommandExit,
-    run_and_exit,
     __version__,
 )
 from pycommand.templates import templates
