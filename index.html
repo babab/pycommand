@@ -1,0 +1,640 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pycommand 0.4.0 &#8212; pycommand 0.4.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">pycommand 0.4.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pycommand-0-4-0">
+<h1>pycommand 0.4.0<a class="headerlink" href="#pycommand-0-4-0" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p><strong>Library / toolkit for creating command line programs with minimal effort.</strong></p>
+<p>Pycommand is essentially a fancy wrapper around getopt that consists of
+one simple <cite>CommandBase</cite> class that you can inherit to create executable
+commands for your (Python) programs with very simplistic and readable
+code. It has support for subcommands and also nesting commands, so you
+can create (multiple levels of) subcommands, with the ability to pass
+the values of optional arguments of a command object to its subcommand
+objects. Supported Python versions are 2.7 and 3.2 and later.</p>
+<ul class="simple">
+<li>Documentation: <a class="reference external" href="http://pythonhosted.org/pycommand/">http://pythonhosted.org/pycommand/</a></li>
+<li>PyPI: <a class="reference external" href="https://pypi.python.org/pypi/pycommand/">https://pypi.python.org/pypi/pycommand/</a></li>
+<li>Github: <a class="reference external" href="https://github.com/babab/pycommand">https://github.com/babab/pycommand</a></li>
+<li>Bitbucket: <a class="reference external" href="https://bitbucket.org/babab/pycommand">https://bitbucket.org/babab/pycommand</a></li>
+</ul>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Parsing of optional and positional arguments</li>
+<li>Minimalistic approach with a clean API</li>
+<li>Create scripts in a matter of minutes using the code generator</li>
+<li>Auto compiled usage messages</li>
+<li>Graceful semi-automatic handling of exit status codes</li>
+<li>Subcommands can have subcommands that can have subcommands
+(each with their own optional arguments)</li>
+<li>Pass values for –some-option from a parent command into child commands.</li>
+</ul>
+</div>
+<div class="section" id="download-and-install">
+<h2>Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h2>
+<p>If you have pip installed, you can just do:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> pip install pycommand
+</pre></div>
+</div>
+</div>
+<div class="section" id="script-generator">
+<h2>Script generator<a class="headerlink" href="#script-generator" title="Permalink to this headline">¶</a></h2>
+<p>To quickly start writing a command from a template (much like the
+examples below), use the script generator by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pycommand init
+</pre></div>
+</div>
+<p>This will ask you for an executable name, class name and template type
+and it will save it to an executable python script, ready to be used as
+a command line program.</p>
+<p>You can have a very basic command line program that handles <code class="docutils literal notranslate"><span class="pre">-v,</span>
+<span class="pre">--version</span></code> and <code class="docutils literal notranslate"><span class="pre">-h,</span> <span class="pre">--help</span></code> arguments set up in less than a minute.</p>
+</div>
+<div class="section" id="example-1-a-basic-command">
+<h2>Example #1 - A Basic command<a class="headerlink" href="#example-1-a-basic-command" title="Permalink to this headline">¶</a></h2>
+<p>Here is a demonstration of the automated usage text generation and
+parsing of optional arguments.</p>
+<p>If we name the script for which you can see the code below
+<code class="docutils literal notranslate"><span class="pre">basic-example</span></code> and execute it, the following will be the output for
+running <code class="docutils literal notranslate"><span class="pre">basic-example</span> <span class="pre">-h</span></code> or <code class="docutils literal notranslate"><span class="pre">basic-example</span> <span class="pre">--help</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: basic-example [options]</span>
+
+<span class="go">An example of a basic CLI program</span>
+
+<span class="go">Options:</span>
+<span class="go">-h, --help                        show this help information</span>
+<span class="go">-f &lt;filename&gt;, --file=&lt;filename&gt;  use specified file</span>
+<span class="go">--version                         show version information</span>
+</pre></div>
+</div>
+<p>And here is the code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">pycommand</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">class</span> <span class="nc">BasicExampleCommand</span><span class="p">(</span><span class="n">pycommand</span><span class="o">.</span><span class="n">CommandBase</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;An example of a basic CLI program</span>
+
+<span class="sd">    This is an example that demonstrates the handling of all possible</span>
+<span class="sd">    settings for the optional arguments, managed via the `optionList`.</span>
+<span class="sd">    This example does not handle positional arguments.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">usagestr</span> <span class="o">=</span> <span class="s1">&#39;usage: basic-example [options]&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="vm">__doc__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># optionList is a tuple of 2-tuples, in format:</span>
+    <span class="c1"># (long-option, (short-option, argument, help-information))</span>
+    <span class="c1">#</span>
+    <span class="c1"># The order in which you define the options will be the order</span>
+    <span class="c1"># in which they will appear in the usage message</span>
+    <span class="n">optionList</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="s1">&#39;show this help information&#39;</span><span class="p">)),</span>
+
+        <span class="c1"># To specify that an option requires an argument just add a</span>
+        <span class="c1"># string that describes it</span>
+        <span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;filename&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;use specified file&#39;</span><span class="p">)),</span>
+
+        <span class="c1"># Use an empty string to ommit short option. Long option names</span>
+        <span class="c1"># cannot be ommitted, since they are used as dictionary keys in</span>
+        <span class="c1"># `self.flags` which holds the validated input</span>
+        <span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="s1">&#39;show version information&#39;</span><span class="p">)),</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The `run` method of the main command</span>
+
+<span class="sd">        You need to define a method in your class that actually deals</span>
+<span class="sd">        with any options that the user of your program has set. We call</span>
+<span class="sd">        it `run` here, but you can name it whatever you want.</span>
+
+<span class="sd">        After the object has been created, there are 4 instance</span>
+<span class="sd">        variables ready for you to use to write the flow of the program.</span>
+<span class="sd">        In this example we only use the following three::</span>
+
+<span class="sd">            error -- Thrown by GetoptError when parsing illegal</span>
+<span class="sd">                     arguments</span>
+
+<span class="sd">            flags -- Object/dict of parsed options and corresponding</span>
+<span class="sd">                     arguments, if any.</span>
+
+<span class="sd">            usage -- String with usage information. The string</span>
+<span class="sd">                     is compiled using the values found for `usagestr`,</span>
+<span class="sd">                     `description`, `optionList` and `usageTextExtra`.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">help</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Python version &#39;</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;filename = &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Program completed. Try adding &quot;--help&quot;&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Shortcut for reading from sys.argv[1:] and sys.exit(status)</span>
+    <span class="n">pycommand</span><span class="o">.</span><span class="n">run_and_exit</span><span class="p">(</span><span class="n">BasicExampleCommand</span><span class="p">)</span>
+
+    <span class="c1"># The shortcut is equivalent to the following:</span>
+
+    <span class="c1"># cmd = BasicExampleCommand(sys.argv[1:])</span>
+    <span class="c1"># if cmd.error:</span>
+    <span class="c1">#     print(&#39;error: {0}&#39;.format(cmd.error))</span>
+    <span class="c1">#     sys.exit(1)</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     sys.exit(cmd.run())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-2-full-example-of-one-main-command-with-two-subcommands">
+<h2>Example #2 - Full example of one main command with two subcommands<a class="headerlink" href="#example-2-full-example-of-one-main-command-with-two-subcommands" title="Permalink to this headline">¶</a></h2>
+<p>Here is a full example demonstrating essentially the same program, but
+with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> and <code class="docutils literal notranslate"><span class="pre">--version</span></code> options replaced for subcommands:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">pycommand</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">class</span> <span class="nc">VersionCommand</span><span class="p">(</span><span class="n">pycommand</span><span class="o">.</span><span class="n">CommandBase</span><span class="p">):</span>
+    <span class="n">usagestr</span> <span class="o">=</span> <span class="s1">&#39;usage: full-example version&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Show version information&#39;</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Python version &#39;</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Fileflag = {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parentFlags</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]))</span>
+
+
+<span class="k">class</span> <span class="nc">HelpCommand</span><span class="p">(</span><span class="n">pycommand</span><span class="o">.</span><span class="n">CommandBase</span><span class="p">):</span>
+    <span class="n">usagestr</span> <span class="o">=</span> <span class="s1">&#39;usage: full-example help [&lt;command&gt;]&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Show help information&#39;</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">VersionCommand</span><span class="p">([])</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FullExampleCommand</span><span class="p">(</span><span class="n">pycommand</span><span class="o">.</span><span class="n">CommandBase</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;An full example of a pycommand CLI program</span>
+
+<span class="sd">    This is an example that demonstrates the mapping of subcommands</span>
+<span class="sd">    and registrering the --file flag from the main command to its</span>
+<span class="sd">    subcommand. It only explains new concepts that are not handled in</span>
+<span class="sd">    ``basic-example``, so be sure to see that first.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">usagestr</span> <span class="o">=</span> <span class="s1">&#39;usage: full-example [-f &lt;filename&gt;] &lt;command&gt; [&lt;args&gt;]&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;Commands:</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;   help         show this help information</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;   version      show full version information&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Mapping of subcommands</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="n">HelpCommand</span><span class="p">,</span>
+                <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">VersionCommand</span><span class="p">}</span>
+
+    <span class="n">optionList</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;filename&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;use specified file&#39;</span><span class="p">)),</span> <span class="p">)</span>
+
+    <span class="c1"># Optional extra usage information</span>
+    <span class="n">usageTextExtra</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;See &#39;full-example help &lt;command&gt;&#39; for more information on a &quot;</span>
+        <span class="s2">&quot;specific command.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The `run` method of the main command</span>
+
+<span class="sd">        After the object has been created, there are 4 instance</span>
+<span class="sd">        variables ready for you to use to write the flow of the program.</span>
+<span class="sd">        In this example we use them all::</span>
+
+<span class="sd">            error -- Thrown by GetoptError when parsing illegal</span>
+<span class="sd">                     arguments</span>
+
+<span class="sd">            flags -- OrderedDict of parsed options and corresponding</span>
+<span class="sd">                     arguments, if any.</span>
+
+<span class="sd">            usage -- String with usage information. The string</span>
+<span class="sd">                     is compiled using the values found for `usagestr`,</span>
+<span class="sd">                     `description`, `optionList` and `usageTextExtra`.</span>
+
+<span class="sd">            parentFlags -- Dict of registered `flags` of another</span>
+<span class="sd">                           `CommandBase` object.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">FullExampleCommand</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">pycommand</span><span class="o">.</span><span class="n">CommandExit</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">err</span>
+
+        <span class="c1"># Register a flag of a parent command</span>
+        <span class="c1"># :Parameters:</span>
+        <span class="c1">#     - `optionName`: String. Name of option</span>
+        <span class="c1">#     - `value`: Mixed. Value of parsed flag`</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">registerParentFlag</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;full-example {cmd}: {error}&#39;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">error</span><span class="o">=</span><span class="n">cmd</span><span class="o">.</span><span class="n">error</span><span class="p">))</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cmd</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Shortcut for reading from sys.argv[1:] and sys.exit(status)</span>
+    <span class="n">pycommand</span><span class="o">.</span><span class="n">run_and_exit</span><span class="p">(</span><span class="n">FullExampleCommand</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And here are some output examples:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./full-example
+<span class="go">usage: full-example [-f &lt;filename&gt;] &lt;command&gt; [&lt;args&gt;]</span>
+
+<span class="go">Commands:</span>
+<span class="go">   help         show this help information</span>
+<span class="go">   version      show full version information</span>
+
+<span class="go">Options:</span>
+<span class="go">-f &lt;filename&gt;, --file=&lt;filename&gt;  use specified file</span>
+
+<span class="go">See &#39;full-example help &lt;command&gt;&#39; for more information on a specific command.</span>
+
+<span class="gp">$</span> ./full-example <span class="nb">help</span> version
+<span class="go">usage: full-example version</span>
+
+<span class="go">Show version information</span>
+
+<span class="gp">$</span> ./full-example -f
+<span class="go">error: option -f requires argument</span>
+
+<span class="gp">$</span> ./full-example -f somefilename version
+<span class="go">Python version 3.3.2</span>
+<span class="go">Fileflag = somefilename</span>
+
+<span class="gp">$</span> ./full-example version
+<span class="go">Python version 3.3.2</span>
+<span class="go">Fileflag = None</span>
+
+<span class="gp">$</span> ./full-example <span class="nb">help</span> doesnotexist
+<span class="go">error: command doesnotexist does not exist</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-documentation">
+<h2>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pycommand.CommandBase">
+<em class="property">class </em><code class="descclassname">pycommand.</code><code class="descname">CommandBase</code><span class="sig-paren">(</span><em>argv=['-b', 'html', '-d', '_build/doctrees', '.', '_build/html']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycommand/pycommand.html#CommandBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycommand.CommandBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for (sub)commands</p>
+<dl class="attribute">
+<dt id="pycommand.CommandBase.args">
+<code class="descname">args</code><em class="property"> = None</em><a class="headerlink" href="#pycommand.CommandBase.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of parsed postional arguments</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.commands">
+<code class="descname">commands</code><em class="property"> = {}</em><a class="headerlink" href="#pycommand.CommandBase.commands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of commands and the callables they invoke.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.description">
+<code class="descname">description</code><em class="property"> = ''</em><a class="headerlink" href="#pycommand.CommandBase.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>String. Small description of subcommand</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.error">
+<code class="descname">error</code><em class="property"> = None</em><a class="headerlink" href="#pycommand.CommandBase.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown by GetoptError when parsing illegal arguments.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.flags">
+<code class="descname">flags</code><em class="property"> = None</em><a class="headerlink" href="#pycommand.CommandBase.flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict of parsed options and corresponding arguments, if any.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.optionList">
+<code class="descname">optionList</code><em class="property"> = {}</em><a class="headerlink" href="#pycommand.CommandBase.optionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of options (as a tuple of 2-tuples).
+This will be transformed to an OrderedDict when initializing the object.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">optionList</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;show this help information&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;dry-run&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="s1">&#39;only print output without actually running&#39;</span><span class="p">)),</span>
+
+    <span class="c1"># To specify that an option requires an argument</span>
+    <span class="c1"># just add a string that describes it</span>
+    <span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;filename&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;use specified file&#39;</span><span class="p">)),</span>
+
+    <span class="c1"># Use an empty string to ommit short option</span>
+    <span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;show debug information&#39;</span><span class="p">)),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.parentFlags">
+<code class="descname">parentFlags</code><em class="property"> = None</em><a class="headerlink" href="#pycommand.CommandBase.parentFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict of registered <cite>flags</cite> of parent Command object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycommand.CommandBase.registerParentFlag">
+<code class="descname">registerParentFlag</code><span class="sig-paren">(</span><em>optionName</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycommand/pycommand.html#CommandBase.registerParentFlag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycommand.CommandBase.registerParentFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a flag of a parent command</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><cite>optionName</cite>: String. Name of option</li>
+<li><cite>value</cite>: Mixed. Value of parsed flag`</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.usage">
+<code class="descname">usage</code><em class="property"> = None</em><a class="headerlink" href="#pycommand.CommandBase.usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>String with usage information</p>
+<p>The string is compiled using the values found for
+<cite>usagestr</cite>, <cite>description</cite>, <cite>optionList</cite> and <cite>usageTextExtra</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.usageTextExtra">
+<code class="descname">usageTextExtra</code><em class="property"> = ''</em><a class="headerlink" href="#pycommand.CommandBase.usageTextExtra" title="Permalink to this definition">¶</a></dt>
+<dd><p>String. Optional extra usage information</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycommand.CommandBase.usagestr">
+<code class="descname">usagestr</code><em class="property"> = 'usage: command [options]'</em><a class="headerlink" href="#pycommand.CommandBase.usagestr" title="Permalink to this definition">¶</a></dt>
+<dd><p>String. Usage synopsis</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycommand.run_and_exit">
+<code class="descclassname">pycommand.</code><code class="descname">run_and_exit</code><span class="sig-paren">(</span><em>command_class</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycommand/pycommand.html#run_and_exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycommand.run_and_exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A shortcut for reading from sys.argv and exiting the interpreter</p>
+</dd></dl>
+
+</div>
+<div class="section" id="why-was-it-created">
+<h2>Why was it created?<a class="headerlink" href="#why-was-it-created" title="Permalink to this headline">¶</a></h2>
+<p>When parsing command line program arguments, I sometimes work with
+<cite>argparse</cite> (a replacement for <cite>optparse</cite>). I don’t really like the API
+and the output it gives, which is the main reason I’ve always used
+<cite>getopt</cite> for parsing arguments whenever possible.</p>
+<p>The <cite>CommandBase</cite> class was originally written for <em>DisPass</em>,
+which is a password manager/generator, as a means to easily define new
+subcommands and have auto-generated usage messages. Because I want to
+have this in other projects I’ve decided to put it in the cheeseshop in 2013.
+It has since been refined for more generic usage and has proven to be
+stable and workable throughout the years.</p>
+</div>
+<div class="section" id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h2>
+<p>pycommand adheres to <a class="reference external" href="http://semver.org/">Semantic Versioning</a>.</p>
+<div class="section" id="git-version-next-release">
+<h3>Git version (next release)<a class="headerlink" href="#git-version-next-release" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="added">
+<h4>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Full templates can now (also) be auto generated</li>
+<li>CI testing for Python 3.5 and 3.6</li>
+</ul>
+</div>
+<div class="section" id="changed">
+<h4>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pycommand</span> <span class="pre">init</span></code> script is removed and is included in the
+pycommand package itself.</p>
+<p>To auto generate scripts from templates, from now on use:</p>
+<blockquote class="last">
+<div>python -m pycommand init</div></blockquote>
+</div>
+<ul class="simple">
+<li>The code is split up into several modules and pycommand is now
+distributed as a package rather than a single module. The public
+API does not change however, all relevant members (CommandBase,
+run_and_exit) that are now placed in pycommand.pycommand are
+exposed through __init__ and therefore are still available as
+<code class="docutils literal notranslate"><span class="pre">pycommand.CommandBase</span></code> and <code class="docutils literal notranslate"><span class="pre">pycommand.run_and_exit</span></code>.</li>
+<li>Code generator is included in the package itself instead of
+using an installed script (<code class="docutils literal notranslate"><span class="pre">pycommand</span> <span class="pre">init</span></code>)</li>
+<li>All templates are now embedded as well</li>
+</ul>
+</div>
+<div class="section" id="removed">
+<h4>Removed<a class="headerlink" href="#removed" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Pycommand init script (installed into /usr/local/bin)</li>
+<li>Templates directory</li>
+<li>GNU info docs and manpage from distribution (they can still be generated)<ul>
+<li>pycommand.3 (prev. installed into /share/man/man3)</li>
+<li>pycommand.info</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>0.3.0 - 2015-06-04<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4>Added<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Shortcut <code class="docutils literal notranslate"><span class="pre">run_and_exit()</span></code> for reading from <code class="docutils literal notranslate"><span class="pre">sys.argv[1:]</span></code> and exiting
+the interpreter via <code class="docutils literal notranslate"><span class="pre">sys.exit(status)</span></code></li>
+<li>Package as wheel distribution to speed up installations</li>
+<li>Add <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">pycommand</span></code> ability, i.e. install mandoc in <code class="docutils literal notranslate"><span class="pre">/usr/share/man3/</span></code></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h4>Changed<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Add support for getting flags by attribute like <code class="docutils literal notranslate"><span class="pre">self.flags.help</span></code>.
+The default approach for normal dicts like <code class="docutils literal notranslate"><span class="pre">self.flags['help']</span></code>
+remains valid.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>0.2.0 - 2015-05-21<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h4>Added<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Full example of a command with subcommands</li>
+<li>Create quick templates via pycommand script (<code class="docutils literal notranslate"><span class="pre">pycommand</span> <span class="pre">init</span></code>)</li>
+<li>Unit tests and automatic testing via Travis-CI</li>
+<li>Documentation <code class="docutils literal notranslate"><span class="pre">man</span></code> (.3) and <code class="docutils literal notranslate"><span class="pre">info</span></code> (.info) pages</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h4>Changed<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Specification of subcommands can be <a class="reference external" href="https://github.com/babab/pycommand/commit/a978a05ef92f70f0ce6b06d96a38c2caa8297ecc">defined in CommandBase.command</a>
+as a shortcut.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>0.1.0 - 2013-08-08<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h4>Added<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Initial release</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="software-license">
+<h2>Software license<a class="headerlink" href="#software-license" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (c) 2013-2016, 2018 Benjamin Althues &lt;<a class="reference external" href="mailto:benjamin&#37;&#52;&#48;babab&#46;nl">benjamin<span>&#64;</span>babab<span>&#46;</span>nl</a>&gt;</p>
+<p>Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pycommand 0.4.0</a><ul>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#download-and-install">Download and install</a></li>
+<li><a class="reference internal" href="#script-generator">Script generator</a></li>
+<li><a class="reference internal" href="#example-1-a-basic-command">Example #1 - A Basic command</a></li>
+<li><a class="reference internal" href="#example-2-full-example-of-one-main-command-with-two-subcommands">Example #2 - Full example of one main command with two subcommands</a></li>
+<li><a class="reference internal" href="#api-documentation">API documentation</a></li>
+<li><a class="reference internal" href="#why-was-it-created">Why was it created?</a></li>
+<li><a class="reference internal" href="#change-log">Change Log</a><ul>
+<li><a class="reference internal" href="#git-version-next-release">Git version (next release)</a><ul>
+<li><a class="reference internal" href="#added">Added</a></li>
+<li><a class="reference internal" href="#changed">Changed</a></li>
+<li><a class="reference internal" href="#removed">Removed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id1">0.3.0 - 2015-06-04</a><ul>
+<li><a class="reference internal" href="#id2">Added</a></li>
+<li><a class="reference internal" href="#id3">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4">0.2.0 - 2015-05-21</a><ul>
+<li><a class="reference internal" href="#id5">Added</a></li>
+<li><a class="reference internal" href="#id6">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8">0.1.0 - 2013-08-08</a><ul>
+<li><a class="reference internal" href="#id9">Added</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#software-license">Software license</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">pycommand 0.4.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013-2015, Benjamin Althues.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+    </div>
+  </body>
+</html>

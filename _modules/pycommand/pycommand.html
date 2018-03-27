@@ -1,0 +1,297 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pycommand.pycommand &#8212; pycommand 0.4.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycommand 0.4.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycommand.pycommand</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Library / toolkit for creating command line programs with minimal effort.&#39;&#39;&#39;</span>
+
+<span class="c1"># Copyright (c) 2013-2016, 2018  Benjamin Althues &lt;benjamin@babab.nl&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Permission to use, copy, modify, and distribute this software for any</span>
+<span class="c1"># purpose with or without fee is hereby granted, provided that the above</span>
+<span class="c1"># copyright notice and this permission notice appear in all copies.</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES</span>
+<span class="c1"># WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR</span>
+<span class="c1"># ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES</span>
+<span class="c1"># WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
+<span class="c1"># ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
+<span class="c1"># OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s1">&#39;restructuredtext&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Benjamin Althues&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright (C) 2013-2016, 2018  Benjamin Althues&quot;</span>
+<span class="n">__version_info__</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.4.0&#39;</span>
+
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">getopt</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">class</span> <span class="nc">CommandExit</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">err</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">OptionError</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Options/Flags AttributeError exception&#39;&#39;&#39;</span>
+
+
+<span class="k">class</span> <span class="nc">dictobject</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;A dictionary with getters by attribute, used for flags &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;Option &#39;</span><span class="si">{}</span><span class="s2">&#39; is not defined&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="CommandBase"><a class="viewcode-back" href="../../index.html#pycommand.CommandBase">[docs]</a><span class="k">class</span> <span class="nc">CommandBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Base class for (sub)commands&#39;&#39;&#39;</span>
+
+    <span class="n">usagestr</span> <span class="o">=</span> <span class="s1">&#39;usage: command [options]&#39;</span>
+    <span class="sd">&#39;&#39;&#39;String. Usage synopsis&#39;&#39;&#39;</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="sd">&#39;&#39;&#39;String. Small description of subcommand&#39;&#39;&#39;</span>
+
+    <span class="n">optionList</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="sd">&#39;&#39;&#39;Dictionary of options (as a tuple of 2-tuples).</span>
+<span class="sd">    This will be transformed to an OrderedDict when initializing the object.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        optionList = (</span>
+<span class="sd">            (&#39;help&#39;, (&#39;h&#39;, False, &#39;show this help information&#39;)),</span>
+<span class="sd">            (&#39;dry-run&#39;, (&#39;n&#39;, False,</span>
+<span class="sd">                         &#39;only print output without actually running&#39;)),</span>
+
+<span class="sd">            # To specify that an option requires an argument</span>
+<span class="sd">            # just add a string that describes it</span>
+<span class="sd">            (&#39;file&#39;, (&#39;f&#39;, &#39;&lt;filename&gt;&#39;, &#39;use specified file&#39;)),</span>
+
+<span class="sd">            # Use an empty string to ommit short option</span>
+<span class="sd">            (&#39;debug&#39;, (&#39;&#39;, False, &#39;show debug information&#39;)),</span>
+<span class="sd">        )</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">usageTextExtra</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="sd">&#39;&#39;&#39;String. Optional extra usage information&#39;&#39;&#39;</span>
+
+    <span class="n">commands</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="sd">&#39;&#39;&#39;Dictionary of commands and the callables they invoke.&#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="sd">&#39;&#39;&#39;Initialize (sub)command object</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `argv`: List of arguments. E.g. `sys.argv[1:]`</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Instance vars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&#39;&#39;&#39;Thrown by GetoptError when parsing illegal arguments.&#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="sd">&#39;&#39;&#39;Dict of parsed options and corresponding arguments, if any.&#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="sd">&#39;&#39;&#39;List of parsed postional arguments&#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parentFlags</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="sd">&#39;&#39;&#39;Dict of registered `flags` of parent Command object.&#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;String with usage information</span>
+
+<span class="sd">        The string is compiled using the values found for</span>
+<span class="sd">        `usagestr`, `description`, `optionList` and `usageTextExtra`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optionList</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optionList</span><span class="p">)</span>
+
+        <span class="c1"># Local vars</span>
+        <span class="n">longopts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">shortopts</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="c1"># Calculate padding needed for option arguments in usage info</span>
+        <span class="k">for</span> <span class="n">flag</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optionList</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">optlen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+            <span class="n">optlen</span> <span class="o">+=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">optlen</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">optlen</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="n">optlen</span> <span class="k">if</span> <span class="n">optlen</span> <span class="o">&gt;</span> <span class="n">padding</span> <span class="k">else</span> <span class="n">padding</span>
+
+        <span class="c1"># Create usage information and build dict of possible flags</span>
+        <span class="n">opthelp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">flag</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optionList</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="n">flag</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="n">flag</span>
+            <span class="n">longopts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">flag</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+
+            <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">flagstring_long</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">{flag}</span><span class="s1">=</span><span class="si">{argument}</span><span class="s1">&#39;</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flag</span><span class="o">=</span><span class="n">flag</span><span class="p">,</span> <span class="n">argument</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">flagstring_short</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">{flag}</span><span class="s1"> </span><span class="si">{argument}</span><span class="s1">&#39;</span>
+                                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flag</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">argument</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flagstring_long</span> <span class="o">=</span> <span class="n">flag</span>
+                <span class="n">flagstring_short</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">shortopts</span> <span class="o">+=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">optline</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;-</span><span class="si">{short}</span><span class="s1">, --</span><span class="si">{flag}</span><span class="s1">&#39;</span>
+                           <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">short</span><span class="o">=</span><span class="n">flagstring_short</span><span class="p">,</span>
+                                   <span class="n">flag</span><span class="o">=</span><span class="n">flagstring_long</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">optline</span> <span class="o">=</span> <span class="s1">&#39;--</span><span class="si">{flag}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flag</span><span class="o">=</span><span class="n">flagstring_long</span><span class="p">)</span>
+
+            <span class="n">opthelp</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39;{options:</span><span class="si">{padding}</span><span class="s1">}  </span><span class="si">{desc}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">optline</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">usagestr</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="si">{desc}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">desc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optionList</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Options:</span><span class="se">\n</span><span class="si">{opts}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">opts</span><span class="o">=</span><span class="n">opthelp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">usageTextExtra</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="si">{help}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">help</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">usageTextExtra</span><span class="p">)</span>
+
+        <span class="c1"># Parse arguments and options</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">opts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="n">shortopts</span><span class="p">,</span> <span class="n">longopts</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">getopt</span><span class="o">.</span><span class="n">GetoptError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">err</span>
+            <span class="k">return</span>  <span class="c1"># Stop when an invalid option is parsed</span>
+
+        <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">opts</span><span class="p">:</span>
+            <span class="c1"># Compare each option with optionList and set values for flags</span>
+            <span class="k">for</span> <span class="n">flag</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optionList</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+                    <span class="c1"># Short tags</span>
+                    <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Long tags</span>
+                    <span class="k">if</span> <span class="n">opt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="n">flag</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Convert to dictobject to allow getting flags by attribute name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">dictobject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CommandExit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span><span class="n">argv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;error: command </span><span class="si">{cmd}</span><span class="s1"> does not exist&#39;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">raise</span> <span class="n">CommandExit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CommandBase.registerParentFlag"><a class="viewcode-back" href="../../index.html#pycommand.CommandBase.registerParentFlag">[docs]</a>    <span class="k">def</span> <span class="nf">registerParentFlag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optionName</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Register a flag of a parent command</span>
+
+<span class="sd">        :Parameters:</span>
+<span class="sd">            - `optionName`: String. Name of option</span>
+<span class="sd">            - `value`: Mixed. Value of parsed flag`</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parentFlags</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">optionName</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="run_and_exit"><a class="viewcode-back" href="../../index.html#pycommand.run_and_exit">[docs]</a><span class="k">def</span> <span class="nf">run_and_exit</span><span class="p">(</span><span class="n">command_class</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;A shortcut for reading from sys.argv and exiting the interpreter&#39;&#39;&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">command_class</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;error: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">error</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">run</span><span class="p">())</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycommand 0.4.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013-2015, Benjamin Althues.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+    </div>
+  </body>
+</html>
