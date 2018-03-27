@@ -1,9 +1,18 @@
 language: python
 python:
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+- '2.7'
+- '3.2'
+- '3.3'
+- '3.4'
+- '3.5'
+- '3.6'
 script: nosetests
+deploy:
+  provider: pypi
+  user: babab
+  password:
+    secure: p4kaecR/DJBeTGnzwM+ePTx7UZcY+lGMCoLQ7Jg7TP0yNPnX4rCVM+l/AFv/dH9JYUZHX42E9wF2BUNIMZ63zYOTx0M49111psrvj7Fu8L0Odlf2VaIIP1puSQJWEU1RISdZA2CAWUtlgP8Y0GMLVrDjxFqfj/lwXB1YX46Sl9k=
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    python: '3.6'
